@@ -1,0 +1,20 @@
+{
+  "name": "kodawari-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node node_modules/@remotion/cli/remotion-cli.js studio src/index.ts",
+    "render": "node node_modules/@remotion/cli/remotion-cli.js render src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.435",
+    "@remotion/compositor-darwin-arm64": "2.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.435"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.4.0"
+  }
+}

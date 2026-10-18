@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Node / Remotion
+node_modules/
+dist/
+out/
+.remotion/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# Video / Audio generated artifacts
+*.mp4
+*.silent.mp4
+*.raw.mp3
+*.concat.txt
+*.props.json
+*.build.json
+audio/
+work/
+public/
+
+# Environment
+.env
+.env.local
