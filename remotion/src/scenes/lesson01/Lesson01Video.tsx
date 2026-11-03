@@ -674,6 +674,14 @@ const FullImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
 const SplitImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   const frame = useCurrentFrame();
   const hasImage = Boolean(s.image);
+  const stepsList =
+    s.steps ??
+    (s as any).cards?.map((c: any, i: number) => ({
+      num: String(i + 1),
+      title: c.title || `ポイント ${i + 1}`,
+      desc: c.body || c.desc || "",
+    })) ??
+    [];
 
   return (
     <AbsoluteFill
@@ -692,7 +700,7 @@ const SplitImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
           sub={s.sub}
         />
 
-        {(s.steps ?? []).map((st, i) => {
+        {stepsList.map((st: any, i: number) => {
           const start = 12 + i * 12;
           const o = interpolate(frame, [start, start + 12], [0, 1], {
             extrapolateLeft: "clamp",
@@ -879,7 +887,15 @@ const DualImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
 // 4. Structured Table Scene (with optional side image)
 const TableSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   const frame = useCurrentFrame();
-  const table = s.table ?? { headers: [], rows: [] };
+  const table: TableData =
+    s.table ??
+    ((s as any).tableHeaders
+      ? {
+          headers: ((s as any).tableHeaders || []) as string[],
+          rows: ((s as any).tableRows || []) as string[][],
+          highlightCol: undefined,
+        }
+      : { headers: [], rows: [] });
   const hasImage = Boolean(s.image);
 
   return (
@@ -1127,7 +1143,14 @@ const ChatSimSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
 // 6. Safety Promises Scene (3 Promises)
 const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   const frame = useCurrentFrame();
-  const steps = s.steps ?? [];
+  const steps: { num: string; title: string; desc: string }[] =
+    s.steps ??
+    (s as any).cards?.map((c: any, i: number) => ({
+      num: String(c.tag || i + 1),
+      title: String(c.title || `ポイント ${i + 1}`),
+      desc: String(c.body || c.desc || ""),
+    })) ??
+    [];
 
   return (
     <AbsoluteFill
@@ -1633,13 +1656,17 @@ const SceneRenderer: React.FC<{ s: Lesson01Scene; build: Lesson01Build }> = ({
 
   return (
     <AbsoluteFill style={{ opacity }}>
-      {s.kind === "title" && <TitleSceneView s={s} build={build} />}
+      {(s.kind === "title" || (s.kind as any) === "hero") && (
+        <TitleSceneView s={s} build={build} />
+      )}
       {s.kind === "full-image" && <FullImageSceneView s={s} />}
       {s.kind === "split-image" && <SplitImageSceneView s={s} />}
       {s.kind === "dual-image" && <DualImageSceneView s={s} />}
       {s.kind === "table" && <TableSceneView s={s} />}
       {s.kind === "chat-sim" && <ChatSimSceneView s={s} />}
-      {s.kind === "promises" && <PromisesSceneView s={s} />}
+      {(s.kind === "promises" || (s.kind as any) === "cards") && (
+        <PromisesSceneView s={s} />
+      )}
       {s.kind === "worksheet" && <WorksheetSceneView s={s} />}
       {s.kind === "dot-flow" && <DotFlowSceneView s={s} />}
       <SubtitleBar narration={s.narration} durationInFrames={s.frames} />

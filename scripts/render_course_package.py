@@ -108,6 +108,24 @@ def get_fish_api_key() -> str:
     )
 
 
+# AI-cliché detector phrases (aligned with coji/natural-japanese lint rules)
+AI_CLICHE_PHRASES: tuple[str, ...] = (
+    "と言えるでしょう",
+    "非常に重要",
+    "さまざまなメリットが存在",
+    "枚挙にいとまがありません",
+    "一石を投じる",
+    "パラダイムシフト",
+    "単なる〜ではなく",
+    "〜と言っても過言ではありません",
+)
+
+
+def lint_japanese_narration(text: str) -> list[str]:
+    """Deterministically detect unnatural AI clichés in narration text."""
+    return [phrase for phrase in AI_CLICHE_PHRASES if phrase in text]
+
+
 def normalize_for_s2_pro(text: str) -> str:
     t = text.strip()
     for k, v in S2_PRO_SAFE_REPLACEMENTS:
@@ -140,7 +158,7 @@ def verify_mp4(path: Path) -> dict:
             "-v",
             "error",
             "-show_entries",
-            "stream=codec_type,codec_name,width,height,r_frame_rate:format=duration,size",
+            "stream=codec_type,codec_name,width,height,r_frame_rate,color_space,sample_rate:stream_tags=language:format=duration,size",
             "-of",
             "json",
             str(path),
@@ -149,11 +167,15 @@ def verify_mp4(path: Path) -> dict:
     )
     info = json.loads(out)
     streams = info.get("streams", [])
-    has_video = any(s.get("codec_type") == "video" for s in streams)
-    has_audio = any(s.get("codec_type") == "audio" for s in streams)
-    if not (has_video and has_audio):
+    v_stream = next((s for s in streams if s.get("codec_type") == "video"), None)
+    a_stream = next((s for s in streams if s.get("codec_type") == "audio"), None)
+    if not (v_stream and a_stream):
         raise RuntimeError(
-            f"Verification failed for {path}: video={has_video}, audio={has_audio}"
+            f"Verification failed for {path}: video={bool(v_stream)}, audio={bool(a_stream)}"
+        )
+    if v_stream.get("width") != WIDTH or v_stream.get("height") != HEIGHT:
+        raise RuntimeError(
+            f"Resolution mismatch for {path}: {v_stream.get('width')}x{v_stream.get('height')} (expected {WIDTH}x{HEIGHT})"
         )
     return info
 
@@ -233,9 +255,9 @@ def synthesize_tts(
     return ffprobe_duration(out_mp3)
 
 
-def sync_package_images(package_dir: Path, lesson_id: str) -> Path:
+def sync_package_images(package_dir: Path, target_id: str) -> Path:
     src_images = package_dir / "images"
-    dst_images = PUBLIC_DIR / lesson_id / "images"
+    dst_images = PUBLIC_DIR / target_id / "images"
     dst_images.mkdir(parents=True, exist_ok=True)
     if src_images.exists():
         for img in src_images.iterdir():
@@ -244,6 +266,14 @@ def sync_package_images(package_dir: Path, lesson_id: str) -> Path:
                 shutil.copy2(img, target)
                 os.chmod(target, 0o644)
         subprocess.run(["xattr", "-cr", str(dst_images)], check=False)
+
+    # Also sync to generic lesson01 for backwards compatibility
+    legacy_dst = PUBLIC_DIR / "lesson01" / "images"
+    legacy_dst.mkdir(parents=True, exist_ok=True)
+    if src_images.exists():
+        for img in src_images.iterdir():
+            if img.is_file():
+                shutil.copy2(img, legacy_dst / img.name)
     return dst_images
 
 
@@ -393,6 +423,10 @@ def auto_compile_package_to_scenes(package_dir: Path) -> dict:
                 scene_obj["kind"] = "table"
                 scene_obj["tableHeaders"] = md_info["headers"]
                 scene_obj["tableRows"] = md_info["rows"]
+                scene_obj["table"] = {
+                    "headers": md_info["headers"],
+                    "rows": md_info["rows"],
+                }
                 if images:
                     scene_obj["image"] = f"images/{images[0]['filename']}"
                     scene_obj["imageCaption"] = images[0].get("caption") or images[0].get("alt", "")
@@ -411,6 +445,11 @@ def auto_compile_package_to_scenes(package_dir: Path) -> dict:
                 scene_obj["image"] = f"images/{images[0]['filename']}"
                 scene_obj["imageCaption"] = images[0].get("caption") or images[0].get("alt", "")
                 bullets = md_info.get("bullets") or nar_lines[1:4]
+                scene_obj["steps"] = [
+                    {"num": str(bi+1), "title": f"ポイント {bi+1}", "desc": b}
+                    for bi, b in enumerate(bullets[:3])
+                ]
+                scene_obj["bullets"] = bullets[:4]
                 scene_obj["cards"] = [
                     {"title": f"ポイント {bi+1}", "body": b}
                     for bi, b in enumerate(bullets[:3])
@@ -426,6 +465,11 @@ def auto_compile_package_to_scenes(package_dir: Path) -> dict:
             else:
                 scene_obj["kind"] = "cards"
                 items = md_info.get("bullets") or md_info.get("numbered") or nar_lines[1:5]
+                scene_obj["steps"] = [
+                    {"num": str(bi+1), "title": b[:22], "desc": b}
+                    for bi, b in enumerate(items[:4])
+                ]
+                scene_obj["bullets"] = items[:4]
                 scene_obj["cards"] = [
                     {"tag": f"POINT {bi+1}", "title": b[:22], "body": b}
                     for bi, b in enumerate(items[:4])
@@ -445,11 +489,12 @@ def auto_compile_package_to_scenes(package_dir: Path) -> dict:
     return compiled
 
 
-def resolve_scenes_spec(package_dir: Path, scenes_json_arg: str, lesson_id: str, batch_job_ids: list[str]) -> dict:
+def resolve_scenes_spec(package_dir: Path, scenes_json_arg: str, course_id: str, lesson_id: str, batch_job_ids: list[str]) -> dict:
     """
     3-Stage Deterministic Resolution:
     1. Explicit `--scenes-json` path if provided
-    2. Pre-curated golden spec in `<skill_root>/examples/<lesson_id>_scenes_spec.json`
+    2. Pre-curated golden spec in `<skill_root>/examples/<course_id>_<lesson_id>_scenes_spec.json`
+       (or `<lesson_id>_scenes_spec.json` for backwards compatibility with a01)
     3. Zero-LLM deterministic compiler from `video-job.json` + `video-script.md`
     """
     if scenes_json_arg:
@@ -458,7 +503,20 @@ def resolve_scenes_spec(package_dir: Path, scenes_json_arg: str, lesson_id: str,
             print(f"[Spec] Using explicit scenes spec: {p}")
             return json.loads(p.read_text(encoding="utf-8"))
 
-    golden_path = SKILL_ROOT / "examples" / f"{lesson_id}_scenes_spec.json"
+    # Check if package_dir contains a pre-curated scenes_spec.json
+    pkg_spec_path = package_dir / "scenes_spec.json"
+    if pkg_spec_path.exists():
+        spec = json.loads(pkg_spec_path.read_text(encoding="utf-8"))
+        jobs_map = spec.get("jobs", spec)
+        if all(jid in jobs_map for jid in batch_job_ids):
+            print(f"[Spec] Using package scenes spec: {pkg_spec_path}")
+            return spec
+
+    # Check course-specific golden spec next
+    golden_path = SKILL_ROOT / "examples" / f"{course_id}_{lesson_id}_scenes_spec.json"
+    if not golden_path.exists() and course_id == "ai-user-a01":
+        golden_path = SKILL_ROOT / "examples" / f"{lesson_id}_scenes_spec.json"
+
     if golden_path.exists():
         spec = json.loads(golden_path.read_text(encoding="utf-8"))
         jobs_map = spec.get("jobs", spec)
@@ -492,18 +550,19 @@ def main() -> None:
     jobs = batch_data.get("jobs", [])
     batch_job_ids = [j.get("jobId") or j.get("id") for j in jobs]
 
-    scenes_spec = resolve_scenes_spec(package_dir, args.scenes_json, lesson_id, batch_job_ids)
+    scenes_spec = resolve_scenes_spec(package_dir, args.scenes_json, course_id, lesson_id, batch_job_ids)
     jobs_map = scenes_spec.get("jobs", scenes_spec)
 
     for jid in batch_job_ids:
         if jid not in jobs_map:
             raise ValueError(f"Job '{jid}' from batch.json is missing in resolved scenes spec")
 
-    print(f"[1/4] Syncing images for {lesson_id} with chmod 644 & xattr -cr...")
-    sync_package_images(package_dir, lesson_id)
+    target_id = f"{course_id}_{lesson_id}"
+    print(f"[1/4] Syncing images for {target_id} with chmod 644 & xattr -cr...")
+    sync_package_images(package_dir, target_id)
 
     api_key = get_fish_api_key()
-    work_dir = REMOTION_ROOT / lesson_id / "audio"
+    work_dir = REMOTION_ROOT / target_id / "audio"
     work_dir.mkdir(parents=True, exist_ok=True)
     SCENES_OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -552,8 +611,8 @@ def main() -> None:
             for img_key in ("image", "secondImage"):
                 if sc_copy.get(img_key):
                     clean_img = sc_copy[img_key].replace("../", "").lstrip("./")
-                    if not clean_img.startswith(f"{lesson_id}/"):
-                        sc_copy[img_key] = f"{lesson_id}/{clean_img}"
+                    if not clean_img.startswith(f"{target_id}/"):
+                        sc_copy[img_key] = f"{target_id}/{clean_img}"
             sc_copy["frames"] = frames
             sc_copy["startFrame"] = cursor_frame
             built_scenes.append(sc_copy)
@@ -561,7 +620,7 @@ def main() -> None:
             mp3_list.append(mp3_path)
             print(f"  - [{idx+1:02d}/{len(scenes):02d}] {sc_id}: {dur:.2f}s ({frames}f)")
 
-        combined_mp3 = PUBLIC_DIR / lesson_id / f"{job_id}.mp3"
+        combined_mp3 = PUBLIC_DIR / target_id / f"{job_id}.mp3"
         combined_mp3.parent.mkdir(parents=True, exist_ok=True)
         concat_mp3_files(mp3_list, combined_mp3)
 
@@ -604,36 +663,119 @@ def main() -> None:
                 "CourseVideo",
                 str(silent_mp4),
                 f"--props={props_json_path}",
-                "--concurrency=6",
+                "--concurrency=4",
+                "--timeout=120000",
             ],
             cwd=str(REMOTION_ROOT),
             check=True,
         )
 
-        print(f"[4/4] Muxing video + s2-pro audio (-map 0:v:0 -map 1:a:0) -> {final_pkg_mp4}...")
-        subprocess.run(
+        print(f"[4/4] Mastering video (BT.709 + EBU R128 -14.5 LUFS 48kHz + JPN SRT) -> {final_pkg_mp4}...")
+        srt_path = work_dir / f"{job_id}.srt"
+        srt_entries = []
+        srt_idx = 1
+        for sc in built_scenes:
+            start_sec = sc["startFrame"] / FPS
+            dur_sec = sc["frames"] / FPS
+            narr = sc.get("narration", "").strip()
+            if not narr:
+                continue
+            sents = [s.strip() for s in re.split(r"(?<=[。！？\n])", narr) if s.strip()]
+            total_chars = max(1, sum(len(s) for s in sents))
+            cur_sec = start_sec
+            for s in sents:
+                s_dur = dur_sec * (len(s) / total_chars)
+                ms_s = int(round(cur_sec * 1000))
+                ms_e = int(round((cur_sec + s_dur) * 1000))
+                t_s = f"{ms_s//3600000:02d}:{(ms_s%3600000)//60000:02d}:{(ms_s%60000)//1000:02d},{ms_s%1000:03d}"
+                t_e = f"{ms_e//3600000:02d}:{(ms_e%3600000)//60000:02d}:{(ms_e%60000)//1000:02d},{ms_e%1000:03d}"
+                srt_entries.append(f"{srt_idx}\n{t_s} --> {t_e}\n{s}\n")
+                cur_sec += s_dur
+                srt_idx += 1
+        srt_path.write_text("\n".join(srt_entries), encoding="utf-8")
+
+        ffmpeg_bin = "/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg"
+        if not Path(ffmpeg_bin).exists():
+            ffmpeg_bin = "ffmpeg"
+
+        p1 = subprocess.run(
             [
-                "ffmpeg",
-                "-y",
-                "-i",
-                str(silent_mp4),
+                ffmpeg_bin,
+                "-hide_banner",
                 "-i",
                 str(combined_mp3),
-                "-map",
-                "0:v:0",
-                "-map",
-                "1:a:0",
+                "-af",
+                "loudnorm=I=-14.5:TP=-1.5:LRA=11:print_format=json",
+                "-f",
+                "null",
+                "-",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        m_match = re.search(r"\{[\s\S]*?\"input_i\"[\s\S]*?\}", p1.stderr)
+        if m_match:
+            ln_stats = json.loads(m_match.group(0))
+            af_filter = (
+                f"loudnorm=I=-14.5:TP=-1.5:LRA=11:"
+                f"measured_I={ln_stats['input_i']}:measured_TP={ln_stats['input_tp']}:"
+                f"measured_LRA={ln_stats['input_lra']}:measured_thresh={ln_stats['input_thresh']}:"
+                f"offset={ln_stats['target_offset']}:linear=true"
+            )
+        else:
+            af_filter = "loudnorm=I=-14.5:TP=-1.5:LRA=11"
+
+        mux_cmd = [
+            ffmpeg_bin,
+            "-y",
+            "-hide_banner",
+            "-i",
+            str(silent_mp4),
+            "-i",
+            str(combined_mp3),
+        ]
+        if srt_entries:
+            mux_cmd.extend(["-i", str(srt_path), "-map", "0:v:0", "-map", "1:a:0", "-map", "2:s:0"])
+        else:
+            mux_cmd.extend(["-map", "0:v:0", "-map", "1:a:0"])
+
+        mux_cmd.extend(
+            [
                 "-c:v",
                 "copy",
+                "-bsf:v",
+                "h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1",
+                "-color_primaries",
+                "bt709",
+                "-color_trc",
+                "bt709",
+                "-colorspace",
+                "bt709",
+                "-af",
+                af_filter,
                 "-c:a",
                 "aac",
+                "-ar",
+                "48000",
                 "-b:a",
                 "192k",
-                "-shortest",
-                "-movflags",
-                "+faststart",
-                str(final_pkg_mp4),
-            ],
+            ]
+        )
+        if srt_entries:
+            mux_cmd.extend(
+                [
+                    "-c:s",
+                    "mov_text",
+                    "-metadata:s:s:0",
+                    "language=jpn",
+                    "-metadata:s:s:0",
+                    "title=Japanese",
+                ]
+            )
+        mux_cmd.extend(["-shortest", "-movflags", "+faststart", str(final_pkg_mp4)])
+        subprocess.run(
+            mux_cmd,
             check=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -645,26 +787,30 @@ def main() -> None:
         if args.downloads_dir:
             dl_dir = Path(args.downloads_dir)
             out_stem = f"{job_id}{args.output_suffix}"
-            dl_mp4 = dl_dir / f"{out_stem}.mp4"
+            course_videos_dir = dl_dir / f"{course_id}_videos"
+            course_videos_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(final_pkg_mp4, course_videos_dir / f"{out_stem}.mp4")
+
+            dl_mp4 = dl_dir / f"{course_id}_{out_stem}.mp4"
             shutil.copy2(final_pkg_mp4, dl_mp4)
-            # If suffix provided, also copy to a dedicated suffixed folder
+
             if args.output_suffix:
-                suffixed_dir = dl_dir / f"{package_dir.name.replace(' ', '_')}_videos{args.output_suffix}"
+                suffixed_dir = dl_dir / f"{course_id}_videos{args.output_suffix}"
                 suffixed_dir.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(final_pkg_mp4, suffixed_dir / f"{out_stem}.mp4")
-            # Also sync standard unzipped output directories in Downloads
+
             for sub_dir_name in (
+                f"{course_id}_videos",
                 f"{lesson_id}_videos",
                 f"{lesson_id}_2_videos",
                 f"{lesson_id}_videos 2",
-                f"{package_dir.name.replace(' ', '_')}_videos",
             ):
                 candidate_dir = dl_dir / sub_dir_name
                 if candidate_dir.exists() and candidate_dir.is_dir():
-                    shutil.copy2(final_pkg_mp4, candidate_dir / f"{job_id}.mp4")
-            print(f"  ✓ Verified & synced to {dl_mp4}")
+                    shutil.copy2(final_pkg_mp4, candidate_dir / f"{out_stem}.mp4")
+            print(f"  ✓ Verified & synced to {dl_mp4} and {course_videos_dir}")
 
-    zip_name = args.zip_name or f"{package_dir.name.replace(' ', '_')}_videos{args.output_suffix}.zip"
+    zip_name = args.zip_name or f"{course_id}_videos{args.output_suffix}.zip"
     if args.downloads_dir:
         zip_path = Path(args.downloads_dir) / zip_name
         with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:

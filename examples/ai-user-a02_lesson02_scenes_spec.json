@@ -1,0 +1,1012 @@
+{
+  "course_id": "ai-user-a02",
+  "lesson_id": "lesson02",
+  "lesson_title": "思いどおりの答えに近づけよう",
+  "notes_revision": 11,
+  "audio": "none",
+  "jobs": {
+    "lesson02-full": {
+      "videoType": "ダイジェスト",
+      "lessonTitle": "思いどおりの答えに近づけよう",
+      "scenes": [
+        {
+          "id": "a2-001",
+          "sectionId": "lesson-opening",
+          "sectionLabel": "思いどおりの答えに近づけよう",
+          "heading": "思いどおりの答えに近づけよう",
+          "kind": "title",
+          "narration": "目的・相手・条件・答えの形を少しずつ伝え、AIから質問してもらいながら、自分に合う答えへ育てる方法を身につけます。",
+          "badge": "INTRODUCTION",
+          "bullets": [
+            "ほしい答えに近づくよう、伝える情報を選ぶ",
+            "頼み直す前後の答えを比べる",
+            "足りない情報をAIから質問してもらう"
+          ],
+          "sub": "今日のゴール",
+          "image": "images/teacher-guide.png"
+        },
+        {
+          "id": "a2-002",
+          "sectionId": "lesson02-section01",
+          "sectionLabel": "今日のゴール",
+          "heading": "今日のゴール",
+          "kind": "split-image",
+          "narration": "最初から詳しい質問を書く必要はありません。まず短く聞き、返ってきた答えを見てから「短くして」「表にして」のように一言を足します。五つの道具は、そのときに選んで使います。",
+          "badge": "SECTION 01",
+          "bullets": [
+            "最初は短く聞く",
+            "答えを見て、必要な一言を追加する",
+            "五つの道具から、必要なものを選ぶ"
+          ]
+        },
+        {
+          "id": "a2-003",
+          "sectionId": "lesson02-section02",
+          "sectionLabel": "プロジェクトを作って、チャットを管理しよう",
+          "heading": "1. ChatGPTで新しいプロジェクトを作る",
+          "kind": "full-image",
+          "narration": "プロジェクトは、同じ目的のチャットや資料をまとめる場所です。サイドバーの「プロジェクト」欄にある「＋」を選びます。「＋」が見えないときは、プロジェクト欄にマウスを合わせます。画面の名称や位置は、利用する端末や更新によって変わることがあります。",
+          "badge": "SECTION 02",
+          "image": "images/chatgpt-project-step1.png"
+        },
+        {
+          "id": "a2-004",
+          "sectionId": "lesson02-section02",
+          "sectionLabel": "プロジェクトを作って、チャットを管理しよう",
+          "heading": "2. プロジェクト名を「U-AI初級」にする",
+          "kind": "full-image",
+          "narration": "プロジェクト名に「U-AI初級」と入力し、「プロジェクトを作成」を選びます。講座名を入れておくと、ほかの相談や仕事のチャットと区別しやすくなります。",
+          "badge": "SECTION 02",
+          "image": "images/chatgpt-project-step2.png"
+        },
+        {
+          "id": "a2-005",
+          "sectionId": "lesson02-section02",
+          "sectionLabel": "プロジェクトを作って、チャットを管理しよう",
+          "heading": "3. [A1]のチャットを移動する",
+          "kind": "full-image",
+          "narration": "[A1]で使ったチャットの「…」を開き、「プロジェクトに移動」から「U-AI初級」を選びます。移動できる[A1]のチャットがない場合や項目が表示されない場合は、この操作を飛ばして大丈夫です。",
+          "badge": "SECTION 02",
+          "image": "images/chatgpt-project-step3.png"
+        },
+        {
+          "id": "a2-006",
+          "sectionId": "lesson02-section02",
+          "sectionLabel": "プロジェクトを作って、チャットを管理しよう",
+          "heading": "4. この単元用の新しいチャットを始める",
+          "kind": "full-image",
+          "narration": "「U-AI初級」プロジェクトの入力欄で「[A2] 思いどおりの答えに近づけよう」と入力し、この単元用の新しいチャットを始めます。[A1]とは別のチャットにすると、あとで見つけやすくなります。",
+          "badge": "SECTION 02",
+          "image": "images/chatgpt-project-step4.png"
+        },
+        {
+          "id": "a2-007",
+          "sectionId": "lesson02-section03",
+          "sectionLabel": "「答えを整える5つの道具」を知ろう",
+          "heading": "最初の質問は、短くていい",
+          "kind": "split-image",
+          "narration": "AIへ質問するとき、最初から詳しい指示を全部書く必要はありません。まずは、普段の会話と同じように、やりたいことを短く伝えます。返ってきた答えが長い、自分に合わない、比べにくいなど、困ったところが見つかったら、その部分を直す一言を追加します。そこで使うのが、次の五つの道具です。五つを最初から全部入れる必要はありません。短く聞いて、足りない部分だけ後から加えます。",
+          "badge": "SECTION 03",
+          "bullets": [
+            "五つの道具は順番ではない",
+            "答えを見て、困ったところだけ直す",
+            "最初から全部を伝えなくてよい"
+          ],
+          "sub": "家の書類を整理したいです。どうすればいい？",
+          "image": "images/sections04-08-overview.svg"
+        },
+        {
+          "id": "a2-008",
+          "sectionId": "lesson02-section04",
+          "sectionLabel": "道具①　何をしてほしいか、動きが見える言葉で伝える",
+          "heading": "答えの方向が違うとき、動きを足す",
+          "kind": "table",
+          "narration": "短く聞いた答えが欲しい方向と違ったら、「比較する」「分類する」「計画を作る」「確認する」など、次にしてほしい動きを一つ伝えます。",
+          "badge": "SECTION 04",
+          "table": {
+            "headers": [
+              "してほしいこと",
+              "頼み方の例"
+            ],
+            "rows": [
+              [
+                "違いを知りたい",
+                "どちらがいいですか？\n↓\n二つの方法を、時間・費用・続けやすさで比較してください"
+              ],
+              [
+                "ばらばらな情報を整えたい",
+                "これを整理してください。\n↓\n次のメモを、期限・内容・担当者に分類してください"
+              ],
+              [
+                "行動へ移したい",
+                "どうすればいいですか？\n↓\n今日から始める3日間の計画を作ってください"
+              ],
+              [
+                "抜けを確かめたい",
+                "これで大丈夫ですか？\n↓\nこの計画で見落としている点を3つ確認してください"
+              ]
+            ]
+          },
+          "sub": "比較・分類・計画・確認など、してほしい動きを伝える。",
+          "image": "images/section03-choose-action.png"
+        },
+        {
+          "id": "a2-009",
+          "sectionId": "lesson02-section04",
+          "sectionLabel": "道具①　何をしてほしいか、動きが見える言葉で伝える",
+          "heading": "比較する観点を加える",
+          "kind": "full-image",
+          "narration": "時間・費用・続けやすさで比較するよう頼み、違いが分かる答えになるか確認します。",
+          "badge": "SECTION 04",
+          "image": "images/lesson02-section04-pre-01-aee1977d.png",
+          "source_block": "generated:pre:lesson02-section04:block-7fe7d27ca79fe95a5fed806e-1/row-0/cell-1/block-f56d346fb6fbac8b5260ee65-1"
+        },
+        {
+          "id": "a2-010",
+          "sectionId": "lesson02-section04",
+          "sectionLabel": "道具①　何をしてほしいか、動きが見える言葉で伝える",
+          "heading": "分類する項目を加える",
+          "kind": "full-image",
+          "narration": "期限・内容・担当者に分けるよう頼み、ばらばらなメモを整理します。",
+          "badge": "SECTION 04",
+          "image": "images/lesson02-section04-pre-02-9a91b24a.png",
+          "source_block": "generated:pre:lesson02-section04:block-7fe7d27ca79fe95a5fed806e-1/row-1/cell-1/block-af4c338eb35f97a03b7eddac-1"
+        },
+        {
+          "id": "a2-011",
+          "sectionId": "lesson02-section04",
+          "sectionLabel": "道具①　何をしてほしいか、動きが見える言葉で伝える",
+          "heading": "期間と完成形を加える",
+          "kind": "full-image",
+          "narration": "今日から始める3日間の計画を頼み、行動へ移せる答えになるか確認します。",
+          "badge": "SECTION 04",
+          "image": "images/lesson02-section04-pre-03-6f471440.png",
+          "source_block": "generated:pre:lesson02-section04:block-7fe7d27ca79fe95a5fed806e-1/row-2/cell-1/block-fe7e81f57e5a925acd6a99f1-1"
+        },
+        {
+          "id": "a2-012",
+          "sectionId": "lesson02-section04",
+          "sectionLabel": "道具①　何をしてほしいか、動きが見える言葉で伝える",
+          "heading": "確認する数を加える",
+          "kind": "full-image",
+          "narration": "見落としている点を3つ確認してもらい、計画の抜けを見つけます。",
+          "badge": "SECTION 04",
+          "image": "images/lesson02-section04-pre-04-7fd3d866.png",
+          "source_block": "generated:pre:lesson02-section04:block-7fe7d27ca79fe95a5fed806e-1/row-3/cell-1/block-16af0b14d8a281e648507659-1"
+        },
+        {
+          "id": "a2-013",
+          "sectionId": "lesson02-section05",
+          "sectionLabel": "道具②　誰が使う答えか伝える",
+          "heading": "自分や相手に合わないとき、使う人を足す",
+          "kind": "table",
+          "narration": "答えが難しい、細かすぎる、自分にはできそうにないと感じたら、その答えを読む人、または使う人を伝えます。言葉の難しさや説明の順番を合わせやすくなります。相手を変えて送信し、手順の数、言葉、優先順位がどう変わるか比べます。",
+          "badge": "SECTION 05",
+          "table": {
+            "headers": [
+              "相手・使う人",
+              "変わるところ"
+            ],
+            "rows": [
+              [
+                "片付けが初めての人",
+                "迷わないよう、手順を細かく分ける"
+              ],
+              [
+                "忙しくて時間がない人",
+                "短時間で効果が出る順にする"
+              ],
+              [
+                "家族みんなで使う人",
+                "分類名を誰でも分かる言葉にする"
+              ]
+            ]
+          },
+          "sub": "答えを使う人を伝え、言葉・手順・優先順位を合わせる。",
+          "image": "images/section04-fit-person.png"
+        },
+        {
+          "id": "a2-014",
+          "sectionId": "lesson02-section05",
+          "sectionLabel": "道具②　誰が使う答えか伝える",
+          "heading": "使う人を加える",
+          "kind": "full-image",
+          "narration": "片付けが苦手な人向けに説明してもらいます。手順の数や言葉がどう変わるか比べましょう。",
+          "badge": "SECTION 05",
+          "image": "images/lesson02-section05-pre-01-61194441.png",
+          "source_block": "generated:pre:lesson02-section05:block-d57521acc7b4414af907b307-1"
+        },
+        {
+          "id": "a2-015",
+          "sectionId": "lesson02-section05",
+          "sectionLabel": "道具②　誰が使う答えか伝える",
+          "heading": "使う人と時間を加える",
+          "kind": "full-image",
+          "narration": "平日は20分しか使えない人向けに計画を頼み、優先順位や手順の変化を比べます。",
+          "badge": "SECTION 05",
+          "image": "images/lesson02-section05-pre-02-682c83ed.png",
+          "source_block": "generated:pre:lesson02-section05:block-4af875d9cfa32439843df19e-1"
+        },
+        {
+          "id": "a2-016",
+          "sectionId": "lesson02-section06",
+          "sectionLabel": "道具③　必要な背景と条件を加える",
+          "heading": "現実にできないとき、背景や条件を足す",
+          "kind": "table",
+          "narration": "時間や使える物が自分の状況に合わなければ、必要な条件を一つずつ追加します。背景は「なぜ必要なのか」、条件は「何を守ってほしいか」です。AIに任せたくないことがあるときは、それも条件として伝えます。「しないで」で終わらず、判断できないときにどうしてほしいかまで伝えると、答えを確認しやすくなります。名前、住所、電話番号、社外秘の資料など、大切な情報は条件として入力しません。必要なら「Aさん」「○○市」のように置き換えます。",
+          "badge": "SECTION 06",
+          "table": {
+            "headers": [
+              "種類",
+              "今回の例",
+              "答えに与える変化"
+            ],
+            "rows": [
+              [
+                "背景",
+                "必要な書類を1分以内に見つけたい",
+                "見た目より探しやすさを優先する"
+              ],
+              [
+                "時間",
+                "平日20分を3日間",
+                "一度に片付けず、作業を分ける"
+              ],
+              [
+                "使えるもの",
+                "収納用品は買わない",
+                "今ある箱や封筒でできる案にする"
+              ],
+              [
+                "困ったとき",
+                "迷う書類は保留箱へ入れる",
+                "途中で止まらない手順にする"
+              ],
+              [
+                "してほしくないこと",
+                "メモにない情報は加えない",
+                "分からない内容を推測で補わない"
+              ]
+            ]
+          },
+          "sub": "背景は「なぜ必要か」、条件は「何を守るか」。",
+          "tip": "名前・住所・電話番号・社外秘は入力せず、必要なら置き換える。",
+          "image": "images/section05-add-conditions.png"
+        },
+        {
+          "id": "a2-017",
+          "sectionId": "lesson02-section06",
+          "sectionLabel": "道具③　必要な背景と条件を加える",
+          "heading": "優先順位を加える",
+          "kind": "full-image",
+          "narration": "3日間で終わることと、見た目より探しやすさを優先することを伝え、条件に合う計画か確認します。",
+          "badge": "SECTION 06",
+          "image": "images/lesson02-section06-pre-01-0975f145.png",
+          "source_block": "generated:pre:lesson02-section06:block-a1f460367dc01c894fa9e399-1"
+        },
+        {
+          "id": "a2-018",
+          "sectionId": "lesson02-section06",
+          "sectionLabel": "道具③　必要な背景と条件を加える",
+          "heading": "してほしくないことも伝える",
+          "kind": "full-image",
+          "narration": "メモにない情報を加えず、不明点は「確認が必要」と書くよう頼みます。推測で補われていないか確認しましょう。",
+          "badge": "SECTION 06",
+          "image": "images/lesson02-section06-pre-02-38512d9f.png",
+          "source_block": "generated:pre:lesson02-section06:block-6e6a4d08f964001cbdc1401a-1"
+        },
+        {
+          "id": "a2-019",
+          "sectionId": "lesson02-section07",
+          "sectionLabel": "道具④　答えの長さと形を指定する",
+          "heading": "長い・比べにくいとき、答えの形を足す",
+          "kind": "table",
+          "narration": "内容は合っていても、長すぎたり、順番が分かりにくかったりすることがあります。そのときだけ、表・チェックリスト・三行など、使う場面に合う形を追加します。「何を書いて」だけでなく、「どう並べて」まで伝えると、答えを直す手間が減ります。",
+          "badge": "SECTION 07",
+          "table": {
+            "headers": [
+              "使う場面",
+              "指定する形",
+              "頼み方"
+            ],
+            "rows": [
+              [
+                "作業しながら見る",
+                "チェックリスト",
+                "一項目を短くし、先頭に「□」を付けてください"
+              ],
+              [
+                "違いを比べる",
+                "表",
+                "方法・時間・費用・注意点の表にしてください"
+              ],
+              [
+                "人に説明する",
+                "三つの要点",
+                "専門用語を使わず、要点を三つにしてください"
+              ],
+              [
+                "予定へ入れる",
+                "日ごとの手順",
+                "Day1〜3に分け、各20分以内にしてください"
+              ]
+            ]
+          },
+          "sub": "使う場面に合わせて、答えの長さと並べ方を指定する。",
+          "image": "images/section06-choose-format.png"
+        },
+        {
+          "id": "a2-020",
+          "sectionId": "lesson02-section07",
+          "sectionLabel": "道具④　答えの長さと形を指定する",
+          "heading": "形を変えて比べよう",
+          "kind": "full-image",
+          "narration": "Day1〜3のチェックリストと目安時間を頼みます。準備や作業を進めやすい形になったか確認しましょう。",
+          "badge": "SECTION 07",
+          "image": "images/lesson02-section07-pre-01-e5bf7784.png",
+          "source_block": "generated:pre:lesson02-section07:block-d7512f0f1c8a3e36208a70c9-1"
+        },
+        {
+          "id": "a2-021",
+          "sectionId": "lesson02-section08",
+          "sectionLabel": "道具⑤　見本を一つ見せて、好みを伝える",
+          "heading": "好みが伝わらないとき、見本を足す",
+          "kind": "split-image",
+          "narration": "好みに合わないときは、型や短い見本を一つ見せます。長い見本は不要です。他人の文章や社内資料を、そのまま貼り付けないようにしましょう。",
+          "badge": "SECTION 08",
+          "bullets": [
+            "好みに合わないとき、短い型や見本を一つ渡す",
+            "そろえたい見出し・長さ・並びを示す",
+            "自作や公開してよい文章を使う"
+          ],
+          "image": "images/section07-show-example.png"
+        },
+        {
+          "id": "a2-022",
+          "sectionId": "lesson02-section08",
+          "sectionLabel": "道具⑤　見本を一つ見せて、好みを伝える",
+          "heading": "型と見本を加える",
+          "kind": "full-image",
+          "narration": "チェック欄、すること、目安時間の型と見本を渡し、ほかの作業も同じ形で書けているか確認します。",
+          "badge": "SECTION 08",
+          "image": "images/lesson02-section08-pre-01-8ef234bb.png",
+          "source_block": "generated:pre:lesson02-section08:block-cc4bed350ad6ec045e805d53-1"
+        },
+        {
+          "id": "a2-023",
+          "sectionId": "lesson02-section08",
+          "sectionLabel": "道具⑤　見本を一つ見せて、好みを伝える",
+          "heading": "写真やスクリーンショットを添付する方法",
+          "kind": "full-image",
+          "narration": "入力欄の左の「＋」から「写真やファイルを追加」を選びます。使いたい画像を選び、表示されたら、どの部分を見本にしたいか文章で伝えます。",
+          "badge": "SECTION 08",
+          "image": "images/chatgpt-add-photo-file.png"
+        },
+        {
+          "id": "a2-024",
+          "sectionId": "lesson02-section08",
+          "sectionLabel": "道具⑤　見本を一つ見せて、好みを伝える",
+          "heading": "画像を添付したあとの頼み方",
+          "kind": "full-image",
+          "narration": "同じ項目と並び順で別の内容を作るよう頼みます。画像から確認できないところは、推測せず質問してもらいましょう。",
+          "badge": "SECTION 08",
+          "image": "images/lesson02-section08-pre-02-e3662c4f.png",
+          "source_block": "generated:pre:lesson02-section08:block-12d179e0dc9c1accaf7919e1-1"
+        },
+        {
+          "id": "a2-025",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題1｜二つの商品を比較したい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。比べたいのは重さ・手入れのしやすさ・価格。「してほしい動き」と「答えの形」を足す。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "比べたいのは重さ・手入れのしやすさ・価格",
+            "「してほしい動き」と「答えの形」を足す"
+          ],
+          "image": "images/question01-compare.jpg"
+        },
+        {
+          "id": "a2-026",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "二つの掃除機について短く質問した例です。比較したい点を伝えずに聞いたときの、選びにくさを確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-01-33bdf7bd.png",
+          "source_block": "generated:pre:lesson02-section09:block-60785c1113359f19d2b1ae4c-1"
+        },
+        {
+          "id": "a2-027",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "比較項目と表形式を指定し、それぞれどんな人に向くか頼みます。判断しやすくなるか確認しましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-02-3bbfffd4.png",
+          "source_block": "generated:pre:lesson02-section09:block-dc91c719314d97fb0422a651-1/block-a0a8a178906600101b68a261-1"
+        },
+        {
+          "id": "a2-028",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題2｜限られた時間で予定を立てたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。使えるのは午前10時〜午後2時。午後1時の予約と15分の休憩を条件に加える。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "使えるのは午前10時〜午後2時",
+            "午後1時の予約と15分の休憩を条件に加える"
+          ],
+          "image": "images/question02-plan.jpg"
+        },
+        {
+          "id": "a2-029",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "土曜日の予定を頼んだ例です。使える時間や予約を伝えないと、自分の都合に合わない予定になることがあります。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-03-47f3eff3.png",
+          "source_block": "generated:pre:lesson02-section09:block-74e2e75b3fbfb9a584e91afb-1"
+        },
+        {
+          "id": "a2-030",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "午前10時から午後2時まで、午後1時の予約、15分の休憩を加え、現実に使える予定か確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-04-ee4dc464.png",
+          "source_block": "generated:pre:lesson02-section09:block-81b17326318653c6ebd864b6-1/block-4514edcedbf0b9127b98e0fa-1"
+        },
+        {
+          "id": "a2-031",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題3｜初めての人にも分かる説明を作りたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。スマートフォンに慣れていない人向け。やさしい言葉・一手順一操作・ボタン名を加える。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "スマートフォンに慣れていない人向け",
+            "やさしい言葉・一手順一操作・ボタン名を加える"
+          ],
+          "image": "images/question03-audience.jpg"
+        },
+        {
+          "id": "a2-032",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "写真の送り方を頼んだ例です。難しい言葉や、一度に複数の操作があると、初めての人は迷います。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-05-cf76ab97.png",
+          "source_block": "generated:pre:lesson02-section09:block-f76f7063d4f0e5f5d4fdd4bc-1"
+        },
+        {
+          "id": "a2-033",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "使う人に合わせ、やさしい言葉と一手順一操作、ボタン名を指定します。一人でも進められる説明か確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-06-0313d8ba.png",
+          "source_block": "generated:pre:lesson02-section09:block-2a46cf542de6c24757baca11-1/block-375164f211817fff0d29ddfa-1"
+        },
+        {
+          "id": "a2-034",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題4｜長い説明をチェックリストにしたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。一泊二日の持ち物を準備しながら確認したい。分類とチェック欄を指定する。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "一泊二日の持ち物を準備しながら確認したい",
+            "分類とチェック欄を指定する"
+          ],
+          "image": "images/question04-checklist.jpg"
+        },
+        {
+          "id": "a2-035",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "旅行の持ち物を頼んだ例です。長い文章では準備しながら確認しにくいことがあります。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-07-602c4491.png",
+          "source_block": "generated:pre:lesson02-section09:block-838b94ca8487b2c211562bac-1"
+        },
+        {
+          "id": "a2-036",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "分類とチェック欄を指定し、一つずつ確認できるリストになったか見てみましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-08-5660a040.png",
+          "source_block": "generated:pre:lesson02-section09:block-a02e37e07032e198730c636d-1/block-3cc494dc02de884e71c836ff-1"
+        },
+        {
+          "id": "a2-037",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題5｜前回と同じ形で作りたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。前回の献立表を画像で見せる。項目と並び順をそろえ、献立は重ねない。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "前回の献立表を画像で見せる",
+            "項目と並び順をそろえ、献立は重ねない"
+          ],
+          "image": "images/question05-example.jpg"
+        },
+        {
+          "id": "a2-038",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "別の一週間分の献立を頼んだ例です。前回と項目や並びが変わると、同じ使い方ができません。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-09-a899b030.png",
+          "source_block": "generated:pre:lesson02-section09:block-f923d82ba4e9273cc8eca6a3-1"
+        },
+        {
+          "id": "a2-039",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "前回の献立表を見せ、同じ項目と並び順を頼みます。内容は前回と重ならず、使いやすい形か確認しましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-10-ccdaea9a.png",
+          "source_block": "generated:pre:lesson02-section09:block-836f34b159e6de6756f9fa80-1/block-f52d521599d4207cb2cc8528-1"
+        },
+        {
+          "id": "a2-040",
+          "sectionId": "lesson02-section10",
+          "sectionLabel": "何を足せばよいか分からないときは、AIに聞いてもらおう",
+          "heading": "何を足せばよいか分からないときは",
+          "kind": "split-image",
+          "narration": "何を伝えればよいか分からないときは、AIに質問役を頼みます。答えながら、自分に合う内容へ整えていきます。",
+          "badge": "SECTION 10",
+          "bullets": [
+            "AIに質問役を頼める",
+            "質問に答えながら、自分に合う内容へ整える"
+          ],
+          "image": "images/section03-two-ways.png"
+        },
+        {
+          "id": "a2-041",
+          "sectionId": "lesson02-section10",
+          "sectionLabel": "何を足せばよいか分からないときは、AIに聞いてもらおう",
+          "heading": "足りないことを、AIに一つずつ聞いてもらう",
+          "kind": "full-image",
+          "narration": "書類整理の方法を考えるために、必要なことを一つずつ質問してもらいます。答えながら、自分の状況を整理しましょう。",
+          "badge": "SECTION 10",
+          "image": "images/lesson02-section10-pre-01-4f57990b.png",
+          "source_block": "generated:pre:lesson02-section10:block-e9bab989f9ce2c81cc46ece6-1"
+        },
+        {
+          "id": "a2-042",
+          "sectionId": "lesson02-section10",
+          "sectionLabel": "何を足せばよいか分からないときは、AIに聞いてもらおう",
+          "heading": "足りないことを、AIに一つずつ聞いてもらう",
+          "kind": "table",
+          "narration": "自分では何を伝えればよいか分からないときは、AIに質問役を頼めます。答えながら、自分に合う内容へ整えていきます。自分がAIへ一方的に指示するだけでなく、AIを質問役にできる。これが、この単元での大きな一歩です。",
+          "badge": "SECTION 10",
+          "table": {
+            "headers": [
+              "AIが確認しそうなこと",
+              "自分が答える例"
+            ],
+            "rows": [
+              [
+                "どの書類に困っていますか",
+                "郵便物と学校からの案内です"
+              ],
+              [
+                "どれくらい時間を使えますか",
+                "平日に20分ずつです"
+              ],
+              [
+                "いちばん困ることは何ですか",
+                "提出期限のある紙を見失います"
+              ]
+            ]
+          },
+          "sub": "質問は一度に一つ、やさしい言葉で。迷ったら選択肢を三つ。最後に回答を整理してから提案してもらう。"
+        },
+        {
+          "id": "a2-043",
+          "sectionId": "lesson02-section11",
+          "sectionLabel": "足りない点を一つずつ伝えて、答えを直す",
+          "heading": "一度で完成させなくてよい",
+          "kind": "table",
+          "narration": "最初の答えに足りないところがあれば、新しく最初から書き直さなくても、続けて頼めます。変えてほしい点を一つずつ伝えると、違いを確認しやすくなります。「3日間に分かれている点はそのままにしてください」と伝えます。「Day1の作業が多いので、三つまでに減らしてください」と追加します。「各日の最後に、終わったか確認する項目を一つ加えてください」と頼みます。答えが自然でも、時間や数、固有名詞が正しいとは限りません。最後は自分で条件と照らして確認します。",
+          "badge": "SECTION 11",
+          "table": {
+            "headers": [
+              "確認すること",
+              "見るポイント"
+            ],
+            "rows": [
+              [
+                "目的に合うか",
+                "必要な書類を見つけやすくなるか"
+              ],
+              [
+                "条件を守っているか",
+                "各日20分以内、買い物なしになっているか"
+              ],
+              [
+                "実際にできそうか",
+                "自分が迷わず始められる言葉か"
+              ]
+            ]
+          },
+          "sub": "①使えるところを残す → ②変えたい点を一つ伝える → ③足りないものを追加する",
+          "tip": "自然な答えでも、時間・数・固有名詞は自分で条件と照合する。"
+        },
+        {
+          "id": "a2-044",
+          "sectionId": "lesson02-section12",
+          "sectionLabel": "今日の課題：追加指示と答えの変化",
+          "heading": "演習を振り返って、気づきを残そう",
+          "kind": "split-image",
+          "narration": "この単元では、教材の途中でさまざまな頼み方を試しました。今日の課題では演習をやり直さず、役立った追加指示と、その前後で答えがどう変わったかを短く振り返ります。目安は約5分です。今日は、「相手・目的・条件・答えの形・見本」を使って、AIの答えを整えました。次は、この道具を使って、ばらばらのメモを実際に使える文章へ変えます。このあとでは、毎回伝えている頼み方を、自分専用AIへ発展させる方法も紹介します。",
+          "badge": "SECTION 12",
+          "bullets": [
+            "役立った追加指示を一つ記録",
+            "追加する前後で、答えがどう変わったか",
+            "なぜ役立ったと思うか"
+          ],
+          "sub": "演習をやり直さず、約5分で振り返る。"
+        },
+        {
+          "id": "a2-045",
+          "sectionId": "lesson02-section13",
+          "sectionLabel": "次は、毎回説明しなくても動く「自分専用AI」へ",
+          "heading": "この単元で試した頼み方が、あなた専用AIの設計図になる",
+          "kind": "table",
+          "narration": "今は、使うたびに目的・相手・条件・答えの形を伝えています。中級B2では、よく使う頼み方や見本を設定し、いつもの進め方と形で手伝う自分専用AIへ発展させます。",
+          "badge": "SECTION 13",
+          "table": {
+            "headers": [
+              "この単元では",
+              "中級[B2]では、こう変わる"
+            ],
+            "rows": [
+              [
+                "目的や相手を、その都度伝える",
+                "誰を助けるAIなのか、最初から役割を設定できる"
+              ],
+              [
+                "「表にして」と、その都度頼む",
+                "いつも同じ見出しや形式で答えるようにできる"
+              ],
+              [
+                "足りないことを質問して、と頼む",
+                "答える前に必要なことを一問ずつ確認するAIにできる"
+              ],
+              [
+                "短い見本を、その都度見せる",
+                "好みの書き方や見本を、繰り返し使える設定にできる"
+              ]
+            ]
+          },
+          "sub": "中級[B2]では、よく使う頼み方や見本をあらかじめ設定する。",
+          "image": "images/01-beginner-to-intermediate.png"
+        },
+        {
+          "id": "a2-046",
+          "sectionId": "lesson02-section13",
+          "sectionLabel": "次は、毎回説明しなくても動く「自分専用AI」へ",
+          "heading": "たとえば、こんな「自分専用AI」が作れる",
+          "kind": "table",
+          "narration": "献立相談、文章作成、会議メモ整理、復習など、自分が繰り返す作業がテーマになります。中級B2では、役割や条件、答えの形を設定し、実際に試して改善して、一つ完成させます。",
+          "badge": "SECTION 13",
+          "table": {
+            "headers": [
+              "専用AIの例",
+              "話しかけると、できること"
+            ],
+            "rows": [
+              [
+                "わが家の献立相談AI",
+                "人数・使える材料・時間を順番に聞き、献立と買い物リストをいつもの形で作る"
+              ],
+              [
+                "やさしい文章作成AI",
+                "相手と目的を確認し、自分の好みに合う長さと雰囲気で連絡文や案内文を作る"
+              ],
+              [
+                "会議メモ整理AI",
+                "安全を確認したメモから、決定事項・作業・担当者・期限を決まった表に整理する"
+              ],
+              [
+                "学びを支える復習AI",
+                "難しい言葉を初心者向けに説明し、理解を確かめる質問や練習問題を作る"
+              ]
+            ]
+          },
+          "sub": "テーマを決める → 役割・条件を設定 → 答えの形や見本を登録 → 試して改善",
+          "tip": "毎回同じ説明をすること、何度も繰り返す作業を一つ思い浮かべる。"
+        }
+      ]
+    },
+    "lesson02-09": {
+      "videoType": "比較・検証",
+      "lessonTitle": "思いどおりの答えに近づけよう",
+      "scenes": [
+        {
+          "id": "a2-025",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題1｜二つの商品を比較したい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。比べたいのは重さ・手入れのしやすさ・価格。「してほしい動き」と「答えの形」を足す。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "比べたいのは重さ・手入れのしやすさ・価格",
+            "「してほしい動き」と「答えの形」を足す"
+          ],
+          "image": "images/question01-compare.jpg"
+        },
+        {
+          "id": "a2-026",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "二つの掃除機について短く質問した例です。比較したい点を伝えずに聞いたときの、選びにくさを確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-01-33bdf7bd.png",
+          "source_block": "generated:pre:lesson02-section09:block-60785c1113359f19d2b1ae4c-1"
+        },
+        {
+          "id": "a2-027",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "比較項目と表形式を指定し、それぞれどんな人に向くか頼みます。判断しやすくなるか確認しましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-02-3bbfffd4.png",
+          "source_block": "generated:pre:lesson02-section09:block-dc91c719314d97fb0422a651-1/block-a0a8a178906600101b68a261-1"
+        },
+        {
+          "id": "a2-028",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題2｜限られた時間で予定を立てたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。使えるのは午前10時〜午後2時。午後1時の予約と15分の休憩を条件に加える。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "使えるのは午前10時〜午後2時",
+            "午後1時の予約と15分の休憩を条件に加える"
+          ],
+          "image": "images/question02-plan.jpg"
+        },
+        {
+          "id": "a2-029",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "土曜日の予定を頼んだ例です。使える時間や予約を伝えないと、自分の都合に合わない予定になることがあります。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-03-47f3eff3.png",
+          "source_block": "generated:pre:lesson02-section09:block-74e2e75b3fbfb9a584e91afb-1"
+        },
+        {
+          "id": "a2-030",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "午前10時から午後2時まで、午後1時の予約、15分の休憩を加え、現実に使える予定か確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-04-ee4dc464.png",
+          "source_block": "generated:pre:lesson02-section09:block-81b17326318653c6ebd864b6-1/block-4514edcedbf0b9127b98e0fa-1"
+        },
+        {
+          "id": "a2-031",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題3｜初めての人にも分かる説明を作りたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。スマートフォンに慣れていない人向け。やさしい言葉・一手順一操作・ボタン名を加える。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "スマートフォンに慣れていない人向け",
+            "やさしい言葉・一手順一操作・ボタン名を加える"
+          ],
+          "image": "images/question03-audience.jpg"
+        },
+        {
+          "id": "a2-032",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "写真の送り方を頼んだ例です。難しい言葉や、一度に複数の操作があると、初めての人は迷います。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-05-cf76ab97.png",
+          "source_block": "generated:pre:lesson02-section09:block-f76f7063d4f0e5f5d4fdd4bc-1"
+        },
+        {
+          "id": "a2-033",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "使う人に合わせ、やさしい言葉と一手順一操作、ボタン名を指定します。一人でも進められる説明か確認します。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-06-0313d8ba.png",
+          "source_block": "generated:pre:lesson02-section09:block-2a46cf542de6c24757baca11-1/block-375164f211817fff0d29ddfa-1"
+        },
+        {
+          "id": "a2-034",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題4｜長い説明をチェックリストにしたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。一泊二日の持ち物を準備しながら確認したい。分類とチェック欄を指定する。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "一泊二日の持ち物を準備しながら確認したい",
+            "分類とチェック欄を指定する"
+          ],
+          "image": "images/question04-checklist.jpg"
+        },
+        {
+          "id": "a2-035",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "旅行の持ち物を頼んだ例です。長い文章では準備しながら確認しにくいことがあります。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-07-602c4491.png",
+          "source_block": "generated:pre:lesson02-section09:block-838b94ca8487b2c211562bac-1"
+        },
+        {
+          "id": "a2-036",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "分類とチェック欄を指定し、一つずつ確認できるリストになったか見てみましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-08-5660a040.png",
+          "source_block": "generated:pre:lesson02-section09:block-a02e37e07032e198730c636d-1/block-3cc494dc02de884e71c836ff-1"
+        },
+        {
+          "id": "a2-037",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "問題5｜前回と同じ形で作りたい",
+          "kind": "split-image",
+          "narration": "最初の答えの困ったところを見つけ、必要な一言を考えます。前回の献立表を画像で見せる。項目と並び順をそろえ、献立は重ねない。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "前回の献立表を画像で見せる",
+            "項目と並び順をそろえ、献立は重ねない"
+          ],
+          "image": "images/question05-example.jpg"
+        },
+        {
+          "id": "a2-038",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "最初の頼み方",
+          "kind": "full-image",
+          "narration": "別の一週間分の献立を頼んだ例です。前回と項目や並びが変わると、同じ使い方ができません。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-09-a899b030.png",
+          "source_block": "generated:pre:lesson02-section09:block-f923d82ba4e9273cc8eca6a3-1"
+        },
+        {
+          "id": "a2-039",
+          "sectionId": "lesson02-section09",
+          "sectionLabel": "答えに足りない指示を追加する",
+          "heading": "追加する一言",
+          "kind": "full-image",
+          "narration": "前回の献立表を見せ、同じ項目と並び順を頼みます。内容は前回と重ならず、使いやすい形か確認しましょう。",
+          "badge": "SECTION 09",
+          "image": "images/lesson02-section09-pre-10-ccdaea9a.png",
+          "source_block": "generated:pre:lesson02-section09:block-836f34b159e6de6756f9fa80-1/block-f52d521599d4207cb2cc8528-1"
+        }
+      ]
+    },
+    "lesson02-13": {
+      "videoType": "活用事例",
+      "lessonTitle": "思いどおりの答えに近づけよう",
+      "scenes": [
+        {
+          "id": "a2-045",
+          "sectionId": "lesson02-section13",
+          "sectionLabel": "次は、毎回説明しなくても動く「自分専用AI」へ",
+          "heading": "この単元で試した頼み方が、あなた専用AIの設計図になる",
+          "kind": "table",
+          "narration": "今は、使うたびに目的・相手・条件・答えの形を伝えています。中級B2では、よく使う頼み方や見本を設定し、いつもの進め方と形で手伝う自分専用AIへ発展させます。",
+          "badge": "SECTION 13",
+          "table": {
+            "headers": [
+              "この単元では",
+              "中級[B2]では、こう変わる"
+            ],
+            "rows": [
+              [
+                "目的や相手を、その都度伝える",
+                "誰を助けるAIなのか、最初から役割を設定できる"
+              ],
+              [
+                "「表にして」と、その都度頼む",
+                "いつも同じ見出しや形式で答えるようにできる"
+              ],
+              [
+                "足りないことを質問して、と頼む",
+                "答える前に必要なことを一問ずつ確認するAIにできる"
+              ],
+              [
+                "短い見本を、その都度見せる",
+                "好みの書き方や見本を、繰り返し使える設定にできる"
+              ]
+            ]
+          },
+          "sub": "中級[B2]では、よく使う頼み方や見本をあらかじめ設定する。",
+          "image": "images/01-beginner-to-intermediate.png"
+        },
+        {
+          "id": "a2-046",
+          "sectionId": "lesson02-section13",
+          "sectionLabel": "次は、毎回説明しなくても動く「自分専用AI」へ",
+          "heading": "たとえば、こんな「自分専用AI」が作れる",
+          "kind": "table",
+          "narration": "献立相談、文章作成、会議メモ整理、復習など、自分が繰り返す作業がテーマになります。中級B2では、役割や条件、答えの形を設定し、実際に試して改善して、一つ完成させます。",
+          "badge": "SECTION 13",
+          "table": {
+            "headers": [
+              "専用AIの例",
+              "話しかけると、できること"
+            ],
+            "rows": [
+              [
+                "わが家の献立相談AI",
+                "人数・使える材料・時間を順番に聞き、献立と買い物リストをいつもの形で作る"
+              ],
+              [
+                "やさしい文章作成AI",
+                "相手と目的を確認し、自分の好みに合う長さと雰囲気で連絡文や案内文を作る"
+              ],
+              [
+                "会議メモ整理AI",
+                "安全を確認したメモから、決定事項・作業・担当者・期限を決まった表に整理する"
+              ],
+              [
+                "学びを支える復習AI",
+                "難しい言葉を初心者向けに説明し、理解を確かめる質問や練習問題を作る"
+              ]
+            ]
+          },
+          "sub": "テーマを決める → 役割・条件を設定 → 答えの形や見本を登録 → 試して改善",
+          "tip": "毎回同じ説明をすること、何度も繰り返す作業を一つ思い浮かべる。"
+        }
+      ]
+    }
+  }
+}

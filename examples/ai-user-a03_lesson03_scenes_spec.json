@@ -1,0 +1,793 @@
+{
+  "course_id": "ai-user-a03",
+  "lesson_id": "lesson03",
+  "lesson_title": "メモを、使える文章へ変えよう",
+  "notes_revision": 6,
+  "jobs": {
+    "lesson03-full": {
+      "videoType": "ダイジェスト",
+      "lessonTitle": "メモを、使える文章へ変えよう",
+      "scenes": [
+        {
+          "id": "a3-001",
+          "sectionId": "lesson-opening",
+          "sectionLabel": "メモを、使える文章へ変えよう",
+          "heading": "メモを、使える文章へ変えよう",
+          "kind": "title",
+          "narration": "思いついた順に書いたメモや、単語だけの走り書きでも大丈夫です。[A2]で学んだ「答えを整える5つの道具」から必要なものを選び、AIへ渡すメモを作ります。短い連絡・メール・案内文へ変えると、「文章を一から考える時間」をぐっと減らせます。最後は、自分の生活や仕事で繰り返し使えるテンプレートを一つ作り、「U-AI初級」の保管用チャットへ残します。",
+          "badge": "INTRODUCTION",
+          "bullets": [
+            "メモを準備し、連絡・メール・案内文に変える",
+            "元の情報と比べ、自分で使える文章に仕上げる",
+            "繰り返し使えるテンプレートを一つ残す"
+          ],
+          "sub": "今日のゴール",
+          "image": "images/teacher-guide.png"
+        },
+        {
+          "id": "a3-002",
+          "sectionId": "lesson03-section01",
+          "sectionLabel": "今日のゴール",
+          "heading": "今日のゴール",
+          "kind": "split-image",
+          "narration": "この単元では、簡単なメモや単語を材料にして、実際に使える文章を作ります。まず短く頼み、返ってきた文章を見て「短くして」「メールにして」のように一言ずつ追加します。最後に、繰り返し使う形だけを自分用のテンプレートにします。",
+          "badge": "SECTION 01",
+          "bullets": [
+            "A2の五つの道具から、必要なものを選ぶ",
+            "まず短く頼み、答えを見て一言ずつ追加する",
+            "繰り返し使う形を、自分用テンプレートにする"
+          ]
+        },
+        {
+          "id": "a3-003",
+          "sectionId": "lesson03-section02",
+          "sectionLabel": "復習：A3用のチャットを「U-AI初級」へ追加しよう",
+          "heading": "この単元のチャットを、学習用プロジェクトへ入れる",
+          "kind": "split-image",
+          "narration": "[A2]で作った「U-AI初級」プロジェクトを、この単元でも使います。A3用の新しいチャットを始めて、ほかのチャットと混ざらないように「U-AI初級」へ移動しましょう。ChatGPTのサイドバーから「新しいチャット」を選びます。「A3 メモを使える文章へ」と入力して送信します。送信すると、最近の項目に新しいチャットが表示されます。最近の項目にできたA3のチャットを、プロジェクト欄の「U-AI初級」までドラッグします。画面の名称や位置は、ChatGPTの更新や利用する端末によって変わることがあります。チャットが「U-AI初級」の中に表示されれば完了です。",
+          "badge": "SECTION 02",
+          "tip": "画面の名称や位置は変わることがあります。プロジェクト内にチャットがあれば完了。",
+          "steps": [
+            {
+              "num": "1",
+              "title": "左上の「新しいチャット」を選ぶ",
+              "desc": "ChatGPTのサイドバーから「新しいチャット」を選びます。"
+            },
+            {
+              "num": "2",
+              "title": "A3用のチャットを始める",
+              "desc": "「A3 メモを使える文章へ」と入力して送信します。送信すると、最近の項目に新しいチャットが表示されます。"
+            },
+            {
+              "num": "3",
+              "title": "「U-AI初級」へドラッグする",
+              "desc": "最近の項目にできたA3のチャットを、プロジェクト欄の「U-AI初級」までドラッグします。"
+            }
+          ]
+        },
+        {
+          "id": "a3-004",
+          "sectionId": "lesson03-section03",
+          "sectionLabel": "メモから、使える文章へ",
+          "heading": "文章を一から考えなくてもいい",
+          "kind": "table",
+          "narration": "単語や走り書きにも、文章の材料があります。AIに整理と文章化を頼み、用途に合う下書きを作ります。文字はコピーし、紙のメモは写真で添付できます。できた文章は元のメモと見比べます。",
+          "badge": "SECTION 03",
+          "table": {
+            "headers": [
+              "手元にあるもの",
+              "AIに任せること",
+              "できあがるもの"
+            ],
+            "rows": [
+              [
+                "単語や短い文のメモ",
+                "重なりをまとめ、順番を整える",
+                "読みやすい要点"
+              ],
+              [
+                "日時や用件の走り書き",
+                "相手と目的に合う文章へ変える",
+                "連絡・メール・案内文"
+              ],
+              [
+                "思いつきを並べたメモ",
+                "不足している点を質問する",
+                "次に確認することが分かる下書き"
+              ]
+            ]
+          },
+          "image": "images/writing-flow.png"
+        },
+        {
+          "id": "a3-005",
+          "sectionId": "lesson03-section03",
+          "sectionLabel": "メモから、使える文章へ",
+          "heading": "ChatGPTに渡すメモを準備",
+          "kind": "full-image",
+          "narration": "文章の材料になる読書交流会のメモです。日時・場所・対象・申込方法などの事実を確認し、コピーして次の課題に使います。",
+          "badge": "SECTION 03",
+          "image": "images/lesson03-section03-pre-01-e2acffdb.png",
+          "source_block": "generated:pre:lesson03-section03:block-a5eb18be98cc7bd03c520daf-1"
+        },
+        {
+          "id": "a3-006",
+          "sectionId": "lesson03-section03",
+          "sectionLabel": "メモから、使える文章へ",
+          "heading": "[A2]の5つの道具から、必要なものを選ぶ",
+          "kind": "table",
+          "narration": "まず「知人への連絡文に変える」と伝えます。答えを見て、必要な条件や形を足します。元のメモはコピーして使い、実名や秘密の情報は事前に置き換えましょう。",
+          "badge": "SECTION 03",
+          "table": {
+            "headers": [
+              "[A2]の道具",
+              "今回メモに足すこと"
+            ],
+            "rows": [
+              [
+                "してほしい動き",
+                "知人へ送る連絡文に変える"
+              ],
+              [
+                "使う人",
+                "知人"
+              ],
+              [
+                "背景と条件",
+                "文章を確認するときに「メモにない情報は加えない」を足す"
+              ],
+              [
+                "答えの形",
+                "最初は使わず、返ってきた文章を見てから足す"
+              ],
+              [
+                "見本",
+                "今回は使わない"
+              ]
+            ]
+          },
+          "sub": "五つ全部ではなく、まず動きと使う人を伝える。",
+          "tip": "貼り付ける前に、実名・連絡先・秘密の情報を仮の表現に置き換える。"
+        },
+        {
+          "id": "a3-007",
+          "sectionId": "lesson03-section04",
+          "sectionLabel": "メモを渡してみよう",
+          "heading": "まずは文章を作ってもらおう",
+          "kind": "table",
+          "narration": "読書交流会のメモを貼り、知人へ送る連絡文にしてと頼みます。返ってきた文章で、事実の欠落や勝手な追加、曖昧な内容の確定がないか確認しましょう。",
+          "badge": "SECTION 04",
+          "table": {
+            "headers": [
+              "返ってきた文章で見ること",
+              "この例での確認"
+            ],
+            "rows": [
+              [
+                "元の事実が残っているか",
+                "日時・場所・参加費・持ち物・締切"
+              ],
+              [
+                "曖昧なことが勝手に確定されていないか",
+                "「3分くらい」が「3分」に変わっていないか"
+              ],
+              [
+                "書いていない事実が足されていないか",
+                "申込フォームのURLや問い合わせ先を勝手に作っていないか"
+              ]
+            ]
+          },
+          "sub": "まず用途だけ伝える。返答は元のメモと照合する。",
+          "image": "images/lesson03-section04-pre-01-a06248e6.png",
+          "source_block": "generated:pre:lesson03-section04:block-7f98faba58468ccf3c156a81-1"
+        },
+        {
+          "id": "a3-008",
+          "sectionId": "lesson03-section04",
+          "sectionLabel": "メモを渡してみよう",
+          "heading": "ChatGPTが作った連絡文",
+          "kind": "full-image",
+          "narration": "日時・場所・参加費・持ち物・締切を確認します。「3分くらい」が確定した時間に変わっていないか、申込URLや問い合わせ先が作られていないか、元のメモと比べましょう。",
+          "badge": "SECTION 04",
+          "image": "images/section04-short-message-result.png"
+        },
+        {
+          "id": "a3-009",
+          "sectionId": "lesson03-section05",
+          "sectionLabel": "連絡文へ変えてみよう",
+          "heading": "返ってきた文章を見て、一言足す",
+          "kind": "full-image",
+          "narration": "同じチャットで、LINEで送れる長さと親しみやすい言葉を追加します。最初から頼み直さず、長さや言葉づかいの変化を比べます。",
+          "badge": "SECTION 05",
+          "image": "images/lesson03-section05-pre-01-b78336c4.png",
+          "source_block": "generated:pre:lesson03-section05:block-afb338cc307f8148b75e19d2-1"
+        },
+        {
+          "id": "a3-010",
+          "sectionId": "lesson03-section05",
+          "sectionLabel": "連絡文へ変えてみよう",
+          "heading": "短い連絡文に変えた結果",
+          "kind": "full-image",
+          "narration": "誰へ送るか、どのくらいの長さかを決めると、メモが送れる形になります。元の情報を確認してから使いましょう。",
+          "badge": "SECTION 05",
+          "image": "images/section05-shorter-message-result.png"
+        },
+        {
+          "id": "a3-011",
+          "sectionId": "lesson03-section06",
+          "sectionLabel": "丁寧なメールへ変えてみよう",
+          "heading": "相手を変えると、同じ内容でも言葉が変わる",
+          "kind": "table",
+          "narration": "メモを貼り直さず、仕事で知り合った人へ送るメールに変え、件名も付けるよう頼みます。相手と用途に合う件名や言葉になったか確認します。",
+          "badge": "SECTION 06",
+          "table": {
+            "headers": [
+              "短い連絡との違い",
+              "メールで加わるもの"
+            ],
+            "rows": [
+              [
+                "画面を開いてすぐ用件を読む",
+                "内容が分かる件名"
+              ],
+              [
+                "会話に近い言葉",
+                "相手との関係に合うあいさつと敬語"
+              ],
+              [
+                "短く情報を並べる",
+                "日時や申込方法が探しやすい順番"
+              ]
+            ]
+          },
+          "image": "images/lesson03-section06-pre-01-d6980a75.png",
+          "source_block": "generated:pre:lesson03-section06:block-b0d83a4a2ea47cef58307934-1"
+        },
+        {
+          "id": "a3-012",
+          "sectionId": "lesson03-section06",
+          "sectionLabel": "丁寧なメールへ変えてみよう",
+          "heading": "件名とあいさつのあるメール",
+          "kind": "full-image",
+          "narration": "同じメモでも、メールでは件名、あいさつ、敬語、情報の順番が変わります。新しく考え直すのではなく、相手と用途を伝えて形を変えています。",
+          "badge": "SECTION 06",
+          "image": "images/section06-email-result.png"
+        },
+        {
+          "id": "a3-013",
+          "sectionId": "lesson03-section07",
+          "sectionLabel": "案内文へ変えてみよう",
+          "heading": "多くの人が読む文章は、探しやすい形にする",
+          "kind": "table",
+          "narration": "ウェブサイトや掲示板に載せる案内文に変え、開催情報を箇条書きにするよう頼みます。必要な情報と申込の行動が探しやすいか確認します。",
+          "badge": "SECTION 07",
+          "table": {
+            "headers": [
+              "案内文の部分",
+              "読み手に分かること"
+            ],
+            "rows": [
+              [
+                "最初の一文",
+                "何の催しか"
+              ],
+              [
+                "開催情報の箇条書き",
+                "いつ・どこで・誰が参加できるか"
+              ],
+              [
+                "最後の一文",
+                "いつまでに何をすればよいか"
+              ]
+            ]
+          },
+          "image": "images/lesson03-section07-pre-01-117038fc.png",
+          "source_block": "generated:pre:lesson03-section07:block-eee1aa4895f7ef184c132f06-1"
+        },
+        {
+          "id": "a3-014",
+          "sectionId": "lesson03-section07",
+          "sectionLabel": "案内文へ変えてみよう",
+          "heading": "必要な情報を探しやすい案内文",
+          "kind": "full-image",
+          "narration": "何の催しか、いつ・どこで・誰が参加できるか、いつまでに何をするかを確認します。一つのメモを、連絡、メール、案内文へ変えられます。",
+          "badge": "SECTION 07",
+          "image": "images/section07-notice-result.png"
+        },
+        {
+          "id": "a3-015",
+          "sectionId": "lesson03-section08",
+          "sectionLabel": "送る前に、元のメモと見比べよう",
+          "heading": "自然な文章ほど、元のメモと見比べる",
+          "kind": "table",
+          "narration": "AIは文章を自然につなぐために、メモにない内容を補うことがあります。たとえば「初心者にもおすすめです」「飲み物を用意しています」と書かれていても、元のメモにないなら事実とは限りません。AIに確認を手伝ってもらうことはできますが、最後は自分でも元のメモと一行ずつ見比べます。AIが「確認しました」と答えても、それだけで正しいとは限りません。送信・公開する前に、日時・名前・数字・申込先を自分で確認します。",
+          "badge": "SECTION 08",
+          "table": {
+            "headers": [
+              "確認するもの",
+              "元のメモと見比べる場所"
+            ],
+            "rows": [
+              [
+                "名前・日時・場所",
+                "文字や数字が変わっていないか"
+              ],
+              [
+                "対象・費用・持ち物",
+                "勝手に条件が増減していないか"
+              ],
+              [
+                "申込方法・締切",
+                "存在しない連絡先や期限が加わっていないか"
+              ],
+              [
+                "雰囲気をよくする表現",
+                "サービスや特典のような事実を作っていないか"
+              ]
+            ]
+          },
+          "sub": "AIにも事実と確認が必要な内容を分けてもらい、最後は自分で一行ずつ照合する。",
+          "tip": "「確認しました」だけでは不十分。送信・公開前に日時・名前・数字・申込先を確認。"
+        },
+        {
+          "id": "a3-016",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "自分がよく使うテンプレートを一つ作ろう",
+          "kind": "split-image",
+          "narration": "同じ頼み方を毎回入力するのは手間がかかります。よく使う作業は、必要な部分だけ入れ替えられるテンプレートにしておきましょう。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "毎回入力する頼み方を残す",
+            "必要な部分だけ入れ替えて使う"
+          ]
+        },
+        {
+          "id": "a3-017",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "何度もしている作業を、一つ選ぶ",
+          "kind": "table",
+          "narration": "文章づくりに時間がかかる場面や、同じ文章を何度も作る場面を一つ選びましょう。生活の連絡、報告文、返信、参加者への案内などが候補です。",
+          "badge": "SECTION 09",
+          "table": {
+            "headers": [
+              "場面",
+              "テンプレートにできる作業"
+            ],
+            "rows": [
+              [
+                "生活",
+                "予定のメモから、家族や知人への連絡文を作る"
+              ],
+              [
+                "仕事",
+                "打ち合わせメモから、上司や同僚への報告文を作る"
+              ],
+              [
+                "仕事",
+                "問い合わせ内容から、返信文の下書きを作る"
+              ],
+              [
+                "地域・活動",
+                "日時や持ち物のメモから、参加者向けの案内文を作る"
+              ]
+            ]
+          },
+          "sub": "読書交流会の例をそのまま保存せず、自分が繰り返す作業を選ぶ。"
+        },
+        {
+          "id": "a3-018",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "AIに質問してもらい、自分用のテンプレートを作る",
+          "kind": "full-image",
+          "narration": "よく行う作業を入れ、必要なことを一つずつ質問してもらいます。分からなければ未定と答えて構いません。完成したら秘密を除いたメモで試し、使いにくい点を一つ直します。実名・連絡先・顧客情報・社内情報は入れません。",
+          "badge": "SECTION 09",
+          "image": "images/lesson03-section09-pre-01-fdc569ec.png",
+          "source_block": "generated:pre:lesson03-section09:block-63c09f39219a043a059b7ae9-1"
+        },
+        {
+          "id": "a3-019",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "試してみた！",
+          "kind": "full-image",
+          "narration": "保護者へのメール作成を繰り返す仕事の例です。質問に一つずつ答え、毎回変わる部分が空欄になったテンプレートを作ってもらいます。",
+          "badge": "SECTION 09",
+          "image": "images/lesson03-section09-pre-02-4a4b8bf6.png",
+          "source_block": "generated:pre:lesson03-section09:block-5deb048eef39bcc6643772a4-1"
+        },
+        {
+          "id": "a3-020",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "質問に答えて完成したテンプレート",
+          "kind": "full-image",
+          "narration": "保護者向けメールのテンプレートができました。自分の作業へ置き換え、安全な短いメモで試し、使える形か確かめます。",
+          "badge": "SECTION 09",
+          "image": "images/section09-parent-email-template-result.png"
+        },
+        {
+          "id": "a3-021",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "1.「U-AI初級」で新しいチャットを始める",
+          "kind": "full-image",
+          "narration": "プロジェクトを開き、新しいチャットを作ります。画面の名称や位置は、ChatGPTの更新によって変わることがあります。",
+          "badge": "SECTION 10",
+          "image": "images/section10-1.png"
+        },
+        {
+          "id": "a3-022",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "2.保管用のチャットだと分かる言葉を送る",
+          "kind": "full-image",
+          "narration": "最初に何のテンプレートかわかる文字を入力して送信します。今回は、「保護者向けメールテンプレート」とします。チャット名を変更できる場合は、同じ名前にします。",
+          "badge": "SECTION 10",
+          "image": "images/section10-start-template-chat.png"
+        },
+        {
+          "id": "a3-023",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "3.必要なら「U-AI初級」へ移動する",
+          "kind": "full-image",
+          "narration": "新しいチャットが「最近の項目」にできた場合は、チャットのメニューから「プロジェクトに移動」→「U-AI初級」を選びます。すでにプロジェクト内にある場合、この操作は不要です。",
+          "badge": "SECTION 10",
+          "image": "images/section10-move-template-chat.png"
+        },
+        {
+          "id": "a3-024",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "4.完成したテンプレートをコピーする",
+          "kind": "full-image",
+          "narration": "先ほどAIと作ったテンプレートだけを選び、コピーします。回答にコピー機能が表示されている場合は、そのボタンも使えます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-copy-template-guide.png"
+        },
+        {
+          "id": "a3-025",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "5.保管用チャットへ貼り付けて送る",
+          "kind": "full-image",
+          "narration": "入力欄を右クリックして「貼り付け」を選びます。何に使うテンプレートか分かる名前と一緒に送信しておくと、次からこのチャットを開いてコピーできます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-paste-template-chat.png"
+        },
+        {
+          "id": "a3-026",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "毎回変わる部分に入力する",
+          "kind": "full-image",
+          "narration": "毎回変わる情報を入れて使います。保管用チャットには実名・連絡先・顧客情報・社内情報を残さず、テンプレートでは空欄にしておきます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-filled-template-safety-guide.png"
+        },
+        {
+          "id": "a3-027",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "AIに渡した結果",
+          "kind": "full-image",
+          "narration": "テンプレートから作られたメールを確認します。保管用チャットだけでは不安なら、メモアプリやWord、Googleドキュメントにもコピーできます。ファイル保存は任意です。",
+          "badge": "SECTION 10",
+          "image": "images/section10-template-use-result.png"
+        },
+        {
+          "id": "a3-028",
+          "sectionId": "lesson03-section11",
+          "sectionLabel": "知っておくと便利―コピーと貼り付けをショートカットキーで行う",
+          "heading": "コピーと貼り付けのショートカット",
+          "kind": "table",
+          "narration": "毎回右クリックしても大丈夫。でも、コピーと貼り付けのキーを覚えると、プロンプトを使う作業がぐっと楽になります。まずは一度、一緒に試してみましょう。",
+          "badge": "SECTION 11",
+          "table": {
+            "headers": [
+              "操作",
+              "Windows",
+              "Mac"
+            ],
+            "rows": [
+              [
+                "コピー",
+                "Ctrl ＋ C",
+                "⌘ command ＋ C"
+              ],
+              [
+                "貼り付け",
+                "Ctrl ＋ V",
+                "⌘ command ＋ V"
+              ],
+              [
+                "一つ前へ戻す",
+                "Ctrl ＋ Z",
+                "⌘ command ＋ Z"
+              ]
+            ]
+          },
+          "sub": "慣れるまでは表を見ながら。右クリックも使ってよい。",
+          "image": "images/section10-shortcut-keys.png"
+        },
+        {
+          "id": "a3-029",
+          "sectionId": "lesson03-section12",
+          "sectionLabel": "保管したテンプレートを、もう一度使ってみよう",
+          "heading": "保管庫から取り出して使えれば、テンプレートの完成",
+          "kind": "full-image",
+          "narration": "保管用チャットでテンプレートを開いてコピーし、別のチャットへ貼り付けます。空欄に秘密を含まない今回の内容を入れて送信します。名前・日時・数字を元の情報と比べ、書いていない事実は削除しましょう。",
+          "badge": "SECTION 12",
+          "image": "images/section12-copy-template-guide.png"
+        },
+        {
+          "id": "a3-030",
+          "sectionId": "lesson03-section13",
+          "sectionLabel": "今日の課題：自分用テンプレート",
+          "heading": "提出する内容をそろえる",
+          "kind": "split-image",
+          "narration": "10で作り、保管用チャットへ残した自分用テンプレートを提出します。あわせて、次に使うときに変える部分と、そのまま残す部分を短く振り返ります。保管用チャットを開き、完成したテンプレートだけをコピーします。「今日の課題を記録しよう」を押します。テンプレートを貼り付け、毎回変える部分と変えない部分を書きます。最後に、実名・連絡先・秘密の情報が含まれていないか確認します。A4以降の課題も、作った内容をコピーし、単元の最後にある提出画面へ貼り付けます。今日は、メモから連絡文を作り、自分用のテンプレートとして残すところまで進みました。次は、長い文章やPDFから、必要な情報と自分がすることを見つけます。このあとでは、一つの文章を作る経験が、中級の「複数の発信をまとめて作る」方法へどう広がるかも見てみましょう。",
+          "badge": "SECTION 13",
+          "tip": "実名・連絡先・秘密の情報が含まれていないか、提出前に確認。",
+          "steps": [
+            {
+              "num": "1",
+              "title": "完成したテンプレートをコピー",
+              "desc": "保管用チャットから、テンプレートだけを選ぶ。"
+            },
+            {
+              "num": "2",
+              "title": "提出画面を開く",
+              "desc": "「今日の課題を記録しよう」を押す。"
+            },
+            {
+              "num": "3",
+              "title": "テンプレートと振り返りを提出",
+              "desc": "毎回変える部分・残す指示・情報を守る確認を書く。"
+            }
+          ]
+        },
+        {
+          "id": "a3-031",
+          "sectionId": "lesson03-section14",
+          "sectionLabel": "同じ内容から、複数の発信物を作れるようになる",
+          "heading": "[B9] 発信をまとめて作る",
+          "kind": "table",
+          "narration": "中級B9では、同じ材料から複数の発信物をまとめて作ります。用途ごとに長さや見せ方を変えながら、日時と内容をそろえて確認・修正します。よく使う組み合わせを、繰り返せる型にします。",
+          "badge": "SECTION 14",
+          "table": {
+            "headers": [
+              "この単元では",
+              "中級[B9]では"
+            ],
+            "rows": [
+              [
+                "メモから文章を1つ作る",
+                "同じ材料から複数の発信物をまとめて作る"
+              ],
+              [
+                "送る相手に合わせて文章を整える",
+                "メール・SNS・チラシなど、使う場所ごとに長さや見せ方を変える"
+              ],
+              [
+                "元のメモと見比べて確認する",
+                "日時や内容をそろえたまま、複数の文章をまとめて確認・修正する"
+              ],
+              [
+                "自分用のテンプレートを保管する",
+                "よく使う発信の組み合わせを、繰り返し使える型にする"
+              ]
+            ]
+          },
+          "sub": "同じ材料から、メール・SNS・チラシ・Webのお知らせへ。",
+          "image": "images/01-beginner-to-intermediate.png"
+        }
+      ]
+    },
+    "lesson03-09": {
+      "videoType": "操作実演",
+      "lessonTitle": "メモを、使える文章へ変えよう",
+      "scenes": [
+        {
+          "id": "a3-016",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "自分がよく使うテンプレートを一つ作ろう",
+          "kind": "split-image",
+          "narration": "同じ頼み方を毎回入力するのは手間がかかります。よく使う作業は、必要な部分だけ入れ替えられるテンプレートにしておきましょう。",
+          "badge": "SECTION 09",
+          "bullets": [
+            "毎回入力する頼み方を残す",
+            "必要な部分だけ入れ替えて使う"
+          ]
+        },
+        {
+          "id": "a3-017",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "何度もしている作業を、一つ選ぶ",
+          "kind": "table",
+          "narration": "文章づくりに時間がかかる場面や、同じ文章を何度も作る場面を一つ選びましょう。生活の連絡、報告文、返信、参加者への案内などが候補です。",
+          "badge": "SECTION 09",
+          "table": {
+            "headers": [
+              "場面",
+              "テンプレートにできる作業"
+            ],
+            "rows": [
+              [
+                "生活",
+                "予定のメモから、家族や知人への連絡文を作る"
+              ],
+              [
+                "仕事",
+                "打ち合わせメモから、上司や同僚への報告文を作る"
+              ],
+              [
+                "仕事",
+                "問い合わせ内容から、返信文の下書きを作る"
+              ],
+              [
+                "地域・活動",
+                "日時や持ち物のメモから、参加者向けの案内文を作る"
+              ]
+            ]
+          },
+          "sub": "読書交流会の例をそのまま保存せず、自分が繰り返す作業を選ぶ。"
+        },
+        {
+          "id": "a3-018",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "AIに質問してもらい、自分用のテンプレートを作る",
+          "kind": "full-image",
+          "narration": "よく行う作業を入れ、必要なことを一つずつ質問してもらいます。分からなければ未定と答えて構いません。完成したら秘密を除いたメモで試し、使いにくい点を一つ直します。実名・連絡先・顧客情報・社内情報は入れません。",
+          "badge": "SECTION 09",
+          "image": "images/lesson03-section09-pre-01-fdc569ec.png",
+          "source_block": "generated:pre:lesson03-section09:block-63c09f39219a043a059b7ae9-1"
+        },
+        {
+          "id": "a3-019",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "試してみた！",
+          "kind": "full-image",
+          "narration": "保護者へのメール作成を繰り返す仕事の例です。質問に一つずつ答え、毎回変わる部分が空欄になったテンプレートを作ってもらいます。",
+          "badge": "SECTION 09",
+          "image": "images/lesson03-section09-pre-02-4a4b8bf6.png",
+          "source_block": "generated:pre:lesson03-section09:block-5deb048eef39bcc6643772a4-1"
+        },
+        {
+          "id": "a3-020",
+          "sectionId": "lesson03-section09",
+          "sectionLabel": "自分がよく使うテンプレートを一つ作ろう",
+          "heading": "質問に答えて完成したテンプレート",
+          "kind": "full-image",
+          "narration": "保護者向けメールのテンプレートができました。自分の作業へ置き換え、安全な短いメモで試し、使える形か確かめます。",
+          "badge": "SECTION 09",
+          "image": "images/section09-parent-email-template-result.png"
+        }
+      ]
+    },
+    "lesson03-10": {
+      "videoType": "操作実演",
+      "lessonTitle": "メモを、使える文章へ変えよう",
+      "scenes": [
+        {
+          "id": "a3-021",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "1.「U-AI初級」で新しいチャットを始める",
+          "kind": "full-image",
+          "narration": "プロジェクトを開き、新しいチャットを作ります。画面の名称や位置は、ChatGPTの更新によって変わることがあります。",
+          "badge": "SECTION 10",
+          "image": "images/section10-1.png"
+        },
+        {
+          "id": "a3-022",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "2.保管用のチャットだと分かる言葉を送る",
+          "kind": "full-image",
+          "narration": "最初に何のテンプレートかわかる文字を入力して送信します。今回は、「保護者向けメールテンプレート」とします。チャット名を変更できる場合は、同じ名前にします。",
+          "badge": "SECTION 10",
+          "image": "images/section10-start-template-chat.png"
+        },
+        {
+          "id": "a3-023",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "3.必要なら「U-AI初級」へ移動する",
+          "kind": "full-image",
+          "narration": "新しいチャットが「最近の項目」にできた場合は、チャットのメニューから「プロジェクトに移動」→「U-AI初級」を選びます。すでにプロジェクト内にある場合、この操作は不要です。",
+          "badge": "SECTION 10",
+          "image": "images/section10-move-template-chat.png"
+        },
+        {
+          "id": "a3-024",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "4.完成したテンプレートをコピーする",
+          "kind": "full-image",
+          "narration": "先ほどAIと作ったテンプレートだけを選び、コピーします。回答にコピー機能が表示されている場合は、そのボタンも使えます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-copy-template-guide.png"
+        },
+        {
+          "id": "a3-025",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "5.保管用チャットへ貼り付けて送る",
+          "kind": "full-image",
+          "narration": "入力欄を右クリックして「貼り付け」を選びます。何に使うテンプレートか分かる名前と一緒に送信しておくと、次からこのチャットを開いてコピーできます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-paste-template-chat.png"
+        },
+        {
+          "id": "a3-026",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "毎回変わる部分に入力する",
+          "kind": "full-image",
+          "narration": "毎回変わる情報を入れて使います。保管用チャットには実名・連絡先・顧客情報・社内情報を残さず、テンプレートでは空欄にしておきます。",
+          "badge": "SECTION 10",
+          "image": "images/section10-filled-template-safety-guide.png"
+        },
+        {
+          "id": "a3-027",
+          "sectionId": "lesson03-section10",
+          "sectionLabel": "作ったテンプレートを、保管用チャットへ残す",
+          "heading": "AIに渡した結果",
+          "kind": "full-image",
+          "narration": "テンプレートから作られたメールを確認します。保管用チャットだけでは不安なら、メモアプリやWord、Googleドキュメントにもコピーできます。ファイル保存は任意です。",
+          "badge": "SECTION 10",
+          "image": "images/section10-template-use-result.png"
+        }
+      ]
+    },
+    "lesson03-14": {
+      "videoType": "活用事例",
+      "lessonTitle": "メモを、使える文章へ変えよう",
+      "scenes": [
+        {
+          "id": "a3-031",
+          "sectionId": "lesson03-section14",
+          "sectionLabel": "同じ内容から、複数の発信物を作れるようになる",
+          "heading": "[B9] 発信をまとめて作る",
+          "kind": "table",
+          "narration": "中級B9では、同じ材料から複数の発信物をまとめて作ります。用途ごとに長さや見せ方を変えながら、日時と内容をそろえて確認・修正します。よく使う組み合わせを、繰り返せる型にします。",
+          "badge": "SECTION 14",
+          "table": {
+            "headers": [
+              "この単元では",
+              "中級[B9]では"
+            ],
+            "rows": [
+              [
+                "メモから文章を1つ作る",
+                "同じ材料から複数の発信物をまとめて作る"
+              ],
+              [
+                "送る相手に合わせて文章を整える",
+                "メール・SNS・チラシなど、使う場所ごとに長さや見せ方を変える"
+              ],
+              [
+                "元のメモと見比べて確認する",
+                "日時や内容をそろえたまま、複数の文章をまとめて確認・修正する"
+              ],
+              [
+                "自分用のテンプレートを保管する",
+                "よく使う発信の組み合わせを、繰り返し使える型にする"
+              ]
+            ]
+          },
+          "sub": "同じ材料から、メール・SNS・チラシ・Webのお知らせへ。",
+          "image": "images/01-beginner-to-intermediate.png"
+        }
+      ]
+    }
+  }
+}
