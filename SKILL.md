@@ -1,81 +1,102 @@
 ---
 name: course-video-producer
-description: 教材パッケージ（batch.json / scenes_spec.json / video-job.json / video-script.md / images / assets-manifest.json）から、1コマンド（Zero-LLM・決定論的パイプライン）で自然な日本語ナレーション（Fish Audio s2-pro 清楚な若手アナウンサー調：ca8c24e05b1245c4bdbf28bfb9be5275）とRemotion（1920x1080・30fps・BT.709・画像100%表示＆自動ズーム）＋放送・配信規格マスタリング（EBU R128 -14.5 LUFS 48kHz / 日本語字幕トラック mov_text 内蔵）のMP4教材動画を高速一括生成するスキル。下位AIモデル（Gemini 3.8 Flash等）でも品質劣化ゼロで即座に完遂可能。
+description: 教材パッケージ、または素のMarkdown・PDF・PowerPoint・Word・HTML・Web記事URLから、1コマンド（Zero-LLM・決定論的パイプライン）で自然な日本語ナレーション付きMP4解説動画を生成するスキル。音声は Fish Audio s2-pro（清楚な若手アナウンサー調：ca8c24e05b1245c4bdbf28bfb9be5275）を標準とし、キーがない環境では edge-tts / macOS say へ自動フォールバックする。16:9・9:16縦型ショート・1:1、5種のブランドテーマ、画面録画クリップ埋め込み（video-clip）に対応。放送・配信規格マスタリング（BT.709 / EBU R128 -14.5 LUFS 48kHz / 日本語字幕トラック）付き。下位AIモデルでも品質劣化なく完遂可能。
 ---
 
-# Course Video Producer v2.0（1コマンド高速・放送局規格教材動画生成スキル）
+# Course Video Producer v3.0（汎用入力・マルチフォーマット・移植性対応）
 
-教材エクスポートパッケージ（例：`ai-user-a01/lesson01`、`ai-user-a02/lesson02`、`ai-user-a03/lesson03` 等）から、**下位AIモデル（`Gemini 3.8 Flash Low/Medium` 等）でも一切のハルシネーションや品質劣化を起こさず、最短1コマンドで放送・YouTube配信規格12項目完全合格（1920×1080 / 30fps / BT.709 / EBU R128 `-14.5 LUFS` 48kHz / 日本語ソフト字幕内蔵）の解説動画MP4を一括生成**するための決定論的スキルです。
+教材パッケージに加えて、**素の文書（Markdown / PDF / PPTX / DOCX / HTML / URL）をそのまま渡すだけ**で、16:9・9:16・1:1 の解説動画MP4を1コマンドで生成します。原稿の内容は書き換えず、見出し・本文・スピーカーノート・ページテキストをそのままナレーションに使います。
+
+> パス表記の `<SKILL_DIR>` は本スキルの配置先です（例: `~/Claude/ai-ops/master_skills/content/course-video-producer`）。
 
 ---
 
 ## ⚡ 最速実行プロトコル（AIモデル向け絶対規律）
 
-ユーザーから「このパッケージ（フォルダ）から動画を作って」と指示された場合、**AIモデルは独自にPythonスクリプトやTypeScript（`.tsx`）や長大なJSONを手書きしてはいけません**。
+**AIモデルは独自にPython・TSX・長大なJSONを手書きしてはいけません。** 以下のどちらか1コマンドだけを実行してください。
 
-### Step 1（これだけで完結）：決定論的パイプラインを1コマンド実行する
-
-以下の **1コマンド** をそのまま実行してください（`--scenes-json` や `--voice-id` の指定すら不要です）：
-
+### A. 素の文書から作る（v3.0）
 ```bash
-python3 /Users/jungosakamoto/Claude/ai-ops/master_skills/content/course-video-producer/scripts/render_course_package.py \
-  --package-dir "<パッケージの絶対パス>" \
-  --downloads-dir "/Users/jungosakamoto/Downloads"
+python3 <SKILL_DIR>/scripts/render_course_package.py --input "<文書パス or URL>" \
+  [--aspect 16:9|9:16|1:1] [--theme corporate-blue|warm-academy|emerald-fresh|sakura|mono-minimal]
+```
+- 例: `--input slides.pptx --aspect 9:16 --theme sakura`（縦型ショート）
+- 例: `--input https://example.com/article`（Web記事を解説動画化）
+
+### B. 既存の教材パッケージから作る（従来どおり）
+```bash
+python3 <SKILL_DIR>/scripts/render_course_package.py --package-dir "<パッケージの絶対パス>"
 ```
 
-### この1コマンドが自動で行う処理（AIの推論・手作業不要）
-1. **シーン定義の自動解決（4段階カスケード）**:
-   - `--scenes-json` 明示指定があれば最優先適用。
-   - パッケージ直下に `<package_dir>/scenes_spec.json` があれば自動検出・適用（0ms）。
-   - `examples/<course_id>_<lesson_id>_scenes_spec.json` に検証済みゴールデン定義があれば自動適用（0ms）。
-   - 新規レッスンでゴールデン定義がない場合も、パッケージ内の `batch.json`・各ジョブの `video-job.json`・`video-script.md`・`assets-manifest.json` を**決定論的パーサーが自動コンパイル**し、原稿100%忠実な `scenes_spec.auto.json` を自動生成します。
-2. **自然な日本語ナレーション検査（`coji/natural-japanese` 連携）**:
-   - 原稿内の不自然なAI常套句（「と言えるでしょう」「非常に重要」「さまざまなメリットが存在」等）を決定論的にチェックし、原文の事実を100%保持（元にない内容を足さない原則）。
-   - 新規台本作成や原稿推敲時は `uv run /Users/jungosakamoto/Claude/ai-ops/master_skills/content/natural-japanese/scripts/lint.py <script.md>` で事前検査可能。
-3. **画像アセットのサニタイズ＆同期**:
-   - `<package_dir>/images/*` を `/Users/jungosakamoto/Claude/content/video/public/<course_id>_<lesson_id>/images/` へコピーし、`chmod 644` と `xattr -cr`（macOS隔離属性除去）を自動実行。
-4. **Fish Audio `s2-pro` 並列音声合成（4並列・SHA-256キャッシュ付き）**:
-   - 標準ボイス **`ca8c24e05b1245c4bdbf28bfb9be5275`**（**プロの明瞭さ × 丁寧で明るい歓迎感：清楚な若手アナウンサー調** / `sample_hybrid_1.mp3`）で、全シーンを4スレッド並列合成（2回目以降は変更シーンのみ差分合成）。
-5. **Remotion フルHDレンダリング（`--concurrency=4 --timeout=120000`）**:
-   - `CourseVideo` コンポジション（[`Lesson01Video.tsx`](file:///Users/jungosakamoto/Claude/content/video/src/scenes/lesson01/Lesson01Video.tsx)）で画面100%表示・注目箇所への自動スポットライト拡大（1.36倍ズーム）付き映像をレンダリング。
-6. **放送・配信規格マスタリング（`kajisho5/ffmpeg-skill` 規格準拠）**:
-   - **EBU R128 2パス線形ラウドネス正規化**: 音声を `-14.5 LUFS` / True Peak `-1.5 dBTP` / `48000 Hz` `192kbps` AAC へ無劣化正規化。
-   - **BT.709 HD色空間刻印**: H.264ビットストリームおよびMP4コンテナに `bt709` を付与し、QuickTime / Chrome / iOS / YouTube間の色味差をゼロ化。
-   - **日本語ソフト字幕トラック内蔵**: 文単位のタイムスタンプから `.srt` を自動生成し、画面内の放送デザイン字幕に加えてMP4公式字幕ストリーム（`mov_text` / `language=jpn`）を多重化。
-   - `ffmpeg-skill` の `check.py --platform youtube` 全12項目（解像度・アスペクト比・FPS・CFR・コーデック・BT.709色空間・48kHz音声・日本語字幕・ラウドネス・True Peak）で **12/12 PASS（0 FAIL / 0 WARN）** を保証。
-7. **全出力先への自動同期＆ZIP作成**:
-   - `<package_dir>/<job_folder>/<job_id>.mp4`
-   - `/Users/jungosakamoto/Downloads/<course_id>_<job_id>.mp4`
-   - `/Users/jungosakamoto/Downloads/<course_id>_videos/<job_id>.mp4`
-   - `/Users/jungosakamoto/Downloads/<course_id>_videos.zip`
+---
+
+## 📥 入力別の変換方式（`scripts/compile_input_to_spec.py`）
+
+| 入力 | 使用ツール（GitHub） | シーンの作り方 | ナレーションの出所 |
+| :--- | :--- | :--- | :--- |
+| `.md` / `.txt` | 内蔵パーサー | `#`=タイトル、`##`/`###`=1シーン。表→`table`、画像→`full-image`/`split-image`/`dual-image`、動画リンク→`video-clip` | 段落本文（なければ箇条書き）。`<!-- narration: ... -->` で上書き可 |
+| `.pdf` | poppler `pdftoppm` / `pdftotext` | 1ページ=1シーン（全画面画像） | ページのテキスト層 |
+| `.pptx` / `.ppt` / `.key` | LibreOffice headless → PDF、[microsoft/markitdown](https://github.com/microsoft/markitdown) | 1スライド=1シーン | **スピーカーノート優先**、なければスライド本文 |
+| `.docx` / `.html` / URL | [microsoft/markitdown](https://github.com/microsoft/markitdown)（`doc-to-md`） | Markdownに変換後、上と同じ | 段落本文 |
+
+- 700文字を超えるセクションは文の切れ目で「（1/2）」のように自動分割します。
+- 生成物は `<入力と同じ階層>/<slug>_video_package/`（URLは `~/Downloads/`）に `batch.json` / `scenes_spec.json` / `images/` / `videos/` として保存され、`--package-dir` で再レンダリングや手修正ができます。
 
 ---
 
-## 🎙️ 標準ナレーション音声・マスタリング仕様
+## 🎨 表現フォーマット
 
-| 項目 | 設定値 |
-| :--- | :--- |
-| **エンジン / モデル** | Fish Audio API (`https://api.fish.audio/v1/tts`) / `model: "s2-pro"` |
-| **標準 `reference_id`** | **`ca8c24e05b1245c4bdbf28bfb9be5275`** （`DEFAULT_VOICE_ID`） |
-| **声質プロファイル** | **プロの明瞭さ × 丁寧で明るい歓迎感（清楚な若手アナウンサー調）**（`sample_hybrid_1.mp3` / 著作権・商用フリー） |
-| **Prosody / 生成設定** | `speed: 0.98`, `volume: 0`, `top_p: 0.8`, `temperature: 0.75`, `chunk_length: 260`, `mp3_bitrate: 192` |
-| **最終音声マスタリング** | EBU R128 2-Pass Linear `loudnorm` (`I=-14.5 LUFS`, `TP=-1.5 dBTP`, `LRA=11`), AAC `48000 Hz` Stereo `192 kbps` |
-| **映像色空間 / 字幕** | H.264 High `1920x1080` `30fps` CFR `bt709` + 焼き込みテロップ + `mov_text` (`jpn`) ソフト字幕 |
-| **APIキー取得** | macOS Keychain (`security find-generic-password -s "FishAudio" -w`) または環境変数 `FISHAUDIO_API_KEY` |
+- **`--aspect`**: `16:9`（1920×1080・従来レイアウト）/ `9:16`（1080×1920）/ `1:1`（1080×1080）。縦型・正方形は、検証済みの16:9ステージを幅いっぱいに縮小配置し、上に大見出し、下に大きな要点と字幕を置きます（既存10レイアウトを書き換えないので回帰リスクが低い）。
+- **`--theme`**: `corporate-blue`（既定）/ `warm-academy` / `emerald-fresh` / `sakura` / `mono-minimal`。主色だけを差し替え、緑・黄・赤などの意味色は維持します。
+- **`video-clip` シーン**: 画面録画や実写（`.mp4/.mov/.webm/.m4v`）を `<OffthreadVideo>` で無音再生。ナレーションより長い場合は最大2倍速、それでも長ければシーンを延長し音声に無音を足して同期を保ちます。短い場合は最終フレームで静止します。
 
 ---
 
-## 🔗 連携スキル（GitHub Ecosystem）
+## 🎙️ 音声（`--tts auto|fish|edge|say`）
 
-- **`natural-japanese`** (`coji/natural-japanese`): ナレーション・台本のAI臭さ除去・自然化Lint（`scripts/lint.py`）
-- **`ffmpeg-skill`** (`kajisho5/ffmpeg-skill`): 42種のローカルFFmpeg編集・EBU R128ラウドネス・納品QC検査（`scripts/check.py` / `scripts/loudness.py` / `scripts/look.py`）
-- **`remotion-best-practices`** (`remotion-dev/skills` v4.0.540): Remotion公式Reactマークアップ・アニメーション・キャプション規約
-- **`remotion-video-director`** (`BayramAnnakov/remotion-video-director`): 映像シナリオ演出・モーショングラフィックス設計パターン
+| プロバイダ | 条件 | 声 |
+| :--- | :--- | :--- |
+| `fish`（標準） | `FISHAUDIO_API_KEY` または macOS Keychain `FishAudio` | `ca8c24e05b1245c4bdbf28bfb9be5275`（s2-pro・清楚な若手アナウンサー調） |
+| `edge` | [rany2/edge-tts](https://github.com/rany2/edge-tts) がインストール済み | `ja-JP-NanamiNeural`（`COURSE_VIDEO_EDGE_VOICE`） |
+| `say` | macOS | `Kyoko`（`COURSE_VIDEO_SAY_VOICE`） |
+
+- `auto`（既定）は fish → edge → say の順に選び、フォールバック時は **⚠️ 警告をログに出します**（標準ボイスと声が変わるため、納品物では `--tts fish` を明示推奨）。
+- `edge` はナレーション本文を Microsoft のオンラインTTSに送信します。機密原稿では `fish` か `say` を使ってください。
+- 有料APIへの自動フォールバックはしません。
 
 ---
 
-## 🚫 下位AIモデル向け禁止事項（Anti-Failure Guardrails）
+## 🔧 移植性（環境変数）
 
-1. **原稿の勝手な創作・要約をしない**: 教材の質問例・比較対象・料金表記を別の例題に書き換えないこと（自動コンパイラおよびパッケージ内の `scenes_spec.json` をそのまま使うこと）。
-2. **Remotionの `.tsx` コンポーネントを書き換えない**: 既存の [`Lesson01Video.tsx`](file:///Users/jungosakamoto/Claude/content/video/src/scenes/lesson01/Lesson01Video.tsx) が全10種類のレイアウト（`title`/`hero`, `full-image`, `split-image`, `dual-image`, `table`, `chat-sim`, `promises`/`cards`, `worksheet`, `dot-flow`）と自動ズームに対応済みです。
-3. **漢字のひらがな開拓やカギ括弧除去をしない**: `render_course_package.py` 内の `S2_PRO_SAFE_REPLACEMENTS` が最適な読み補正を行います。
+| 変数 | 既定値 | 用途 |
+| :--- | :--- | :--- |
+| `COURSE_VIDEO_REMOTION_ROOT` | 同梱 `remotion/`（npm install済みなら）→ `~/Claude/content/video` | Remotionプロジェクト |
+| `COURSE_VIDEO_DOWNLOADS_DIR` | `~/Downloads` | コピー・ZIP出力先（`--downloads-dir ""` で無効） |
+| `FISHAUDIO_API_KEY` | （Keychainはmacのみ参照） | Fish Audio キー |
+
+---
+
+## 🛠️ 共通の自動処理（A/B共通）
+
+1. シーン定義の解決（`--scenes-json` → パッケージ内 `scenes_spec.json` → `examples/` → 自動コンパイラ）
+2. 日本語AI常套句チェック（[coji/natural-japanese](https://github.com/coji/natural-japanese) 準拠・原文は変更せず警告のみ）
+3. 画像・動画アセットを Remotion `public/` へ同期（macのみ `xattr -cr`）
+4. TTS 4並列合成（SHA-256キャッシュ。Fishの既存キャッシュはv2と互換）、シーン尺に合わせた無音パディングで音ズレ累積を防止
+5. Remotion レンダリング（`--concurrency=4 --timeout=120000`）
+6. マスタリング（[kajisho5/ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill) 規格: EBU R128 -14.5 LUFS / TP -1.5 dBTP / 48kHz AAC、BT.709タグ、日本語 `mov_text` 字幕）と ffprobe 解像度検証
+7. 出力: `<package>/<job>/<job>.mp4`、`<Downloads>/<course>_<job>.mp4`、`<Downloads>/<course>_videos.zip`
+
+---
+
+## 🚫 下位AIモデル向け禁止事項
+
+1. **原稿の創作・要約をしない**: 自動コンパイラの出力をそのまま使う。修正が必要なら元の文書を直すか、Markdownの `<!-- narration: ... -->` を使う。
+2. **Remotionの `.tsx` を書き換えない**: `Lesson01Video.tsx` は11レイアウト（`title`/`hero`, `full-image`, `split-image`, `dual-image`, `table`, `chat-sim`, `promises`/`cards`, `worksheet`, `dot-flow`, `video-clip`）・3アスペクト・5テーマに対応済み。
+3. **読み替え辞書を勝手に増やさない**: `S2_PRO_SAFE_REPLACEMENTS` が読み補正を担当。
+
+## ⚠️ 既知の限界
+
+- PDFはテキスト層のない画像PDFだとナレーションが見出しだけになる（OCRは行わない）。
+- PDF/スライドのページテキストは箇条書きの断片が多く、話し言葉としては硬い。PPTXはスピーカーノートを書くと品質が大きく上がる。
+- 縦型・正方形は16:9ステージを縮小するため、ステージ内の小さな文字はスマホでは読みにくい（大見出し・要点・字幕で補う設計）。
+- 字幕の切り替えは文字数比例で、実音声と最大1秒程度ずれることがある。

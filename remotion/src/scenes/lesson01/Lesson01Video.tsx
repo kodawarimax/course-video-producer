@@ -9,6 +9,8 @@ import {
   interpolate,
   spring,
   Easing,
+  OffthreadVideo,
+  Freeze,
 } from "remotion";
 
 export type SpotlightRect = {
@@ -46,7 +48,8 @@ export type Lesson01Scene = {
     | "chat-sim"
     | "promises"
     | "worksheet"
-    | "dot-flow";
+    | "dot-flow"
+    | "video-clip";
   badge?: string;
   badgeColor?: "blue" | "green" | "amber" | "red" | "purple";
   heading: string;
@@ -66,6 +69,11 @@ export type Lesson01Scene = {
   chatSteps?: ChatStep[];
   worksheetItems?: string[];
   checklist?: string[];
+  // video-clip scene (screen recording / live action), path: "<target_id>/videos/<file>"
+  video?: string;
+  videoCaption?: string;
+  videoFrames?: number; // output frames the clip plays before freezing on its last frame
+  videoPlaybackRate?: number;
   narration: string;
   frames: number;
   startFrame: number;
@@ -82,6 +90,7 @@ export type Lesson01Build = {
   height: number;
   totalFrames: number;
   scenes: Lesson01Scene[];
+  theme?: string; // "corporate-blue" (default) | "warm-academy" | "emerald-fresh" | "sakura" | "mono-minimal"
 };
 
 export type Lesson01Props = {
@@ -112,6 +121,66 @@ const THEME = {
   purple: "#7C3AED",
   purpleLight: "#F5F3FF",
   purpleBorder: "#DDD6FE",
+};
+
+// Brand theme presets. Only the primary palette keys are overridden; semantic
+// colours (green/amber/red/purple) stay identical so tables/badges keep meaning.
+const DEFAULT_THEME = { ...THEME };
+const THEME_PRESETS: Record<string, Partial<typeof THEME>> = {
+  "corporate-blue": {},
+  "warm-academy": {
+    bgStart: "#FFF8EE",
+    bgEnd: "#FFFDF8",
+    cardBorder: "#F1E4CF",
+    navy: "#3B2A1A",
+    slate: "#5B4636",
+    muted: "#8A7360",
+    blue: "#C2410C",
+    blueLight: "#FFF1E6",
+    blueBorder: "#FBD3B5",
+  },
+  "emerald-fresh": {
+    bgStart: "#EEFBF5",
+    bgEnd: "#FFFFFF",
+    cardBorder: "#D1F0E2",
+    navy: "#06302A",
+    slate: "#1F4D44",
+    muted: "#5B7F76",
+    blue: "#059669",
+    blueLight: "#ECFDF5",
+    blueBorder: "#A7F3D0",
+  },
+  sakura: {
+    bgStart: "#FFF1F5",
+    bgEnd: "#FFFFFF",
+    cardBorder: "#FBD5E2",
+    navy: "#3F1D2B",
+    slate: "#5E3446",
+    muted: "#93707F",
+    blue: "#DB2777",
+    blueLight: "#FDF2F8",
+    blueBorder: "#FBCFE8",
+  },
+  "mono-minimal": {
+    bgStart: "#F5F5F5",
+    bgEnd: "#FFFFFF",
+    cardBorder: "#E5E5E5",
+    navy: "#111111",
+    slate: "#333333",
+    muted: "#737373",
+    blue: "#111111",
+    blueLight: "#F5F5F5",
+    blueBorder: "#D4D4D4",
+  },
+};
+
+const applyTheme = (name?: string) => {
+  Object.assign(THEME, DEFAULT_THEME, THEME_PRESETS[name ?? ""] ?? {});
+};
+
+const resolveVideoPath = (relPath?: string): string => {
+  if (!relPath) return "";
+  return relPath.replace(/^\.\.\//, "").replace(/^\.\//, "");
 };
 
 const FONT_SANS =
@@ -666,6 +735,97 @@ const FullImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
       {s.quote && <CalloutBox type="quote" text={s.quote} delay={22} />}
       {s.tip && <CalloutBox type="tip" text={s.tip} delay={22} />}
       {s.warning && <CalloutBox type="warning" text={s.warning} delay={22} />}
+    </AbsoluteFill>
+  );
+};
+
+// 1b. Video Clip Scene (screen recording / live action, muted under narration)
+const VideoClipSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
+  const frame = useCurrentFrame();
+  const src = resolveVideoPath(s.video);
+  const clipFrames = Math.max(1, Math.min(s.videoFrames ?? s.frames, s.frames));
+  const rate = s.videoPlaybackRate && s.videoPlaybackRate > 0 ? s.videoPlaybackRate : 1;
+  const appear = interpolate(frame, [0, 14], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const player = src ? (
+    <OffthreadVideo
+      src={staticFile(src)}
+      muted
+      playbackRate={rate}
+      style={{ width: "100%", height: "100%", objectFit: "contain", backgroundColor: "#000" }}
+    />
+  ) : null;
+
+  return (
+    <AbsoluteFill
+      style={{
+        padding: "72px 48px 126px 48px",
+        flexDirection: "column",
+        gap: 14,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        {s.badge && (
+          <div style={{ marginBottom: -14 }}>
+            <AnimatedBadge text={s.badge} color={s.badgeColor} />
+          </div>
+        )}
+        <div
+          style={{
+            fontFamily: FONT_ROUND,
+            fontWeight: 800,
+            fontSize: 38,
+            color: THEME.navy,
+            lineHeight: 1.2,
+          }}
+        >
+          <HighlightMarker>{s.heading}</HighlightMarker>
+        </div>
+      </div>
+      <div
+        style={{
+          flex: 1,
+          borderRadius: 22,
+          overflow: "hidden",
+          border: `1px solid ${THEME.cardBorder}`,
+          boxShadow: "0 18px 40px rgba(15, 23, 42, 0.14)",
+          backgroundColor: "#000",
+          opacity: appear,
+          position: "relative",
+        }}
+      >
+        {player && (
+          <>
+            <Sequence durationInFrames={clipFrames}>{player}</Sequence>
+            {clipFrames < s.frames && (
+              <Sequence from={clipFrames}>
+                <Freeze frame={Math.max(0, Math.floor((clipFrames - 1) * rate))}>
+                  <OffthreadVideo
+                    src={staticFile(src)}
+                    muted
+                    style={{ width: "100%", height: "100%", objectFit: "contain", backgroundColor: "#000" }}
+                  />
+                </Freeze>
+              </Sequence>
+            )}
+          </>
+        )}
+      </div>
+      {(s.videoCaption || s.sub) && (
+        <div
+          style={{
+            fontFamily: FONT_SANS,
+            fontSize: 21,
+            fontWeight: 600,
+            color: THEME.slate,
+            textAlign: "center",
+          }}
+        >
+          {s.videoCaption || s.sub}
+        </div>
+      )}
     </AbsoluteFill>
   );
 };
@@ -1641,10 +1801,11 @@ const SubtitleBar: React.FC<{ narration: string; durationInFrames: number }> = (
   );
 };
 
-const SceneRenderer: React.FC<{ s: Lesson01Scene; build: Lesson01Build }> = ({
-  s,
-  build,
-}) => {
+const SceneRenderer: React.FC<{
+  s: Lesson01Scene;
+  build: Lesson01Build;
+  hideSubtitle?: boolean;
+}> = ({ s, build, hideSubtitle }) => {
   const frame = useCurrentFrame();
   // Smooth cross-fade in & out per scene
   const opacity = interpolate(
@@ -1669,7 +1830,239 @@ const SceneRenderer: React.FC<{ s: Lesson01Scene; build: Lesson01Build }> = ({
       )}
       {s.kind === "worksheet" && <WorksheetSceneView s={s} />}
       {s.kind === "dot-flow" && <DotFlowSceneView s={s} />}
-      <SubtitleBar narration={s.narration} durationInFrames={s.frames} />
+      {s.kind === "video-clip" && <VideoClipSceneView s={s} />}
+      {!hideSubtitle && (
+        <SubtitleBar narration={s.narration} durationInFrames={s.frames} />
+      )}
+    </AbsoluteFill>
+  );
+};
+
+// Large subtitle for vertical / square canvases (outside the 16:9 stage)
+const CanvasSubtitle: React.FC<{ narration: string; durationInFrames: number; fontSize: number }> = ({
+  narration,
+  durationInFrames,
+  fontSize,
+}) => {
+  const frame = useCurrentFrame();
+  const sentences = narration
+    .split(/(?<=[。！？])\s*/)
+    .map((x) => x.trim())
+    .filter(Boolean);
+  if (sentences.length === 0) return null;
+  const totalChars = sentences.reduce((acc, x) => acc + x.length, 0) || 1;
+  let accum = 0;
+  let active = sentences[sentences.length - 1];
+  for (const x of sentences) {
+    const startF = Math.floor((accum / totalChars) * durationInFrames);
+    accum += x.length;
+    const endF = Math.ceil((accum / totalChars) * durationInFrames);
+    if (frame >= startF && frame <= endF) {
+      active = x;
+      break;
+    }
+  }
+  return (
+    <div
+      style={{
+        backgroundColor: "rgba(15, 23, 42, 0.92)",
+        color: "#FFFFFF",
+        fontFamily: FONT_ROUND,
+        fontWeight: 800,
+        fontSize,
+        lineHeight: 1.45,
+        padding: `${Math.round(fontSize * 0.6)}px ${Math.round(fontSize * 0.9)}px`,
+        borderRadius: 24,
+        textAlign: "center",
+        boxShadow: "0 12px 30px rgba(0, 0, 0, 0.25)",
+      }}
+    >
+      {active}
+    </div>
+  );
+};
+
+const STAGE_W = 1920;
+const STAGE_H = 1080;
+
+// Vertical (9:16) / square (1:1) layout: the proven 1920x1080 stage is scaled
+// to the canvas width (no layout rewrite = no regression), with a large title
+// band above and big readable subtitles below.
+const AdaptiveCanvas: React.FC<{ build: Lesson01Build }> = ({ build }) => {
+  const frame = useCurrentFrame();
+  const W = build.width;
+  const H = build.height;
+  const scale = W / STAGE_W;
+  const stageH = STAGE_H * scale;
+  const isPortrait = H / W > 1.2;
+  const headerH = isPortrait ? Math.round(H * 0.17) : Math.round(H * 0.11);
+  const stageTop = isPortrait ? headerH + Math.round(H * 0.03) : headerH;
+  const subtitleTop = stageTop + stageH + Math.round(H * 0.03);
+  const progress = interpolate(frame, [0, build.totalFrames], [0, 100], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const idx = build.scenes.findIndex(
+    (s) => frame >= s.startFrame && frame < s.startFrame + s.frames,
+  );
+  const current = build.scenes[idx >= 0 ? idx : 0];
+  const titleSize = Math.round(W * (isPortrait ? 0.058 : 0.045));
+
+  return (
+    <AbsoluteFill
+      style={{
+        background: `linear-gradient(160deg, ${THEME.bgStart} 0%, ${THEME.bgEnd} 100%)`,
+      }}
+    >
+      {/* Title band */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: headerH,
+          padding: `0 ${Math.round(W * 0.06)}px`,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: Math.round(W * 0.015),
+        }}
+      >
+        <div
+          style={{
+            alignSelf: "flex-start",
+            backgroundColor: THEME.navy,
+            color: "#FFFFFF",
+            fontFamily: FONT_ROUND,
+            fontWeight: 700,
+            fontSize: Math.round(W * 0.026),
+            padding: "6px 16px",
+            borderRadius: 10,
+          }}
+        >
+          {build.lessonId.toUpperCase()}　{(idx >= 0 ? idx : 0) + 1} / {build.scenes.length}
+        </div>
+        <div
+          style={{
+            fontFamily: FONT_ROUND,
+            fontWeight: 800,
+            fontSize: titleSize,
+            lineHeight: 1.25,
+            color: THEME.navy,
+          }}
+        >
+          {current?.heading ?? build.lessonTitle}
+        </div>
+      </div>
+
+      {/* Scaled 16:9 stage */}
+      <div
+        style={{
+          position: "absolute",
+          top: stageTop,
+          left: 0,
+          width: W,
+          height: stageH,
+          overflow: "hidden",
+          backgroundColor: THEME.bgEnd,
+          boxShadow: "0 10px 30px rgba(15, 23, 42, 0.10)",
+        }}
+      >
+        <div
+          style={{
+            position: "relative",
+            width: STAGE_W,
+            height: STAGE_H,
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            background: `linear-gradient(135deg, ${THEME.bgStart} 0%, ${THEME.bgEnd} 100%)`,
+          }}
+        >
+          {build.scenes.map((s) => (
+            <Sequence key={s.id} from={s.startFrame} durationInFrames={s.frames}>
+              <SceneRenderer s={s} build={build} hideSubtitle />
+            </Sequence>
+          ))}
+        </div>
+      </div>
+
+      {/* Large key points (portrait only): phone-readable copy of the scene bullets */}
+      {isPortrait && (
+        <div
+          style={{
+            position: "absolute",
+            top: stageTop + stageH + Math.round(H * 0.03),
+            left: Math.round(W * 0.07),
+            right: Math.round(W * 0.07),
+          }}
+        >
+          {build.scenes.map((s) => {
+            const pts = (s.bullets ?? (s.steps ?? []).map((st) => st.title)).slice(0, 4);
+            if (pts.length === 0) return null;
+            return (
+              <Sequence key={`pts-${s.id}`} from={s.startFrame} durationInFrames={s.frames} layout="none">
+                <div style={{ display: "flex", flexDirection: "column", gap: Math.round(W * 0.022) }}>
+                  {pts.map((p, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        gap: 18,
+                        alignItems: "flex-start",
+                        fontFamily: FONT_ROUND,
+                        fontWeight: 700,
+                        fontSize: Math.round(W * 0.042),
+                        lineHeight: 1.35,
+                        color: THEME.navy,
+                      }}
+                    >
+                      <span style={{ color: THEME.blue }}>●</span>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                </div>
+              </Sequence>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Big subtitles */}
+      <div
+        style={{
+          position: "absolute",
+          ...(isPortrait ? { bottom: Math.round(H * 0.07) } : { top: subtitleTop }),
+          left: Math.round(W * 0.05),
+          right: Math.round(W * 0.05),
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {build.scenes.map((s) => (
+          <Sequence key={`sub-${s.id}`} from={s.startFrame} durationInFrames={s.frames} layout="none">
+            <CanvasSubtitle
+              narration={s.narration}
+              durationInFrames={s.frames}
+              fontSize={Math.round(W * (isPortrait ? 0.048 : 0.036))}
+            />
+          </Sequence>
+        ))}
+      </div>
+
+      {/* Progress bar */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 10,
+          backgroundColor: "#E2E8F0",
+        }}
+      >
+        <div style={{ height: "100%", width: `${progress}%`, backgroundColor: THEME.blue }} />
+      </div>
     </AbsoluteFill>
   );
 };
@@ -1678,6 +2071,13 @@ export const Lesson01Video: React.FC<Lesson01Props> = ({ build }) => {
   const frame = useCurrentFrame();
   if (!build) {
     return null;
+  }
+  applyTheme(build.theme);
+
+  // Non-16:9 canvases (9:16 shorts, 1:1 square) use the adaptive wrapper.
+  const ratio = (build.width || STAGE_W) / (build.height || STAGE_H);
+  if (Math.abs(ratio - 16 / 9) > 0.02) {
+    return <AdaptiveCanvas build={build} />;
   }
 
   const progress = interpolate(frame, [0, build.totalFrames], [0, 100], {
