@@ -35,6 +35,36 @@ export type ChatStep = {
   note?: string;
 };
 
+export type SubtitleCue = {
+  text: string;
+  startFrame: number;
+  endFrame: number;
+  highlightWords?: string[];
+};
+
+export type DialogueTurn = {
+  speaker: string;
+  role?: "host" | "guest" | string;
+  text: string;
+  startFrame?: number;
+  endFrame?: number;
+};
+
+export type ChartItem = {
+  label: string;
+  value: number;
+  maxValue?: number;
+  unit?: string;
+  color?: string;
+  note?: string;
+};
+
+export type ChartData = {
+  title?: string;
+  unit?: string;
+  items: ChartItem[];
+};
+
 export type Lesson01Scene = {
   id: string;
   sectionId?: string;
@@ -49,7 +79,9 @@ export type Lesson01Scene = {
     | "promises"
     | "worksheet"
     | "dot-flow"
-    | "video-clip";
+    | "video-clip"
+    | "dialogue"
+    | "chart";
   badge?: string;
   badgeColor?: "blue" | "green" | "amber" | "red" | "purple";
   heading: string;
@@ -67,6 +99,9 @@ export type Lesson01Scene = {
   spotlights?: SpotlightRect[];
   table?: TableData;
   chatSteps?: ChatStep[];
+  dialogue?: DialogueTurn[];
+  chartData?: ChartData;
+  subtitleCues?: SubtitleCue[];
   worksheetItems?: string[];
   checklist?: string[];
   // video-clip scene (screen recording / live action), path: "<target_id>/videos/<file>"
@@ -471,6 +506,7 @@ const FramedImageCard: React.FC<{
       >
         <Img
           src={staticFile(resolveAssetPath(imagePath))}
+          alt={caption || "slide visual asset"}
           style={{
             width: "100%",
             height: "100%",
@@ -485,35 +521,55 @@ const FramedImageCard: React.FC<{
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           });
-          const pulse = 1 + Math.sin((frame - spStart) * 0.16) * 0.02;
-          if (!sp.label) return null;
+          const pulse = 1 + Math.sin((frame - spStart) * 0.16) * 0.025;
+          const boxColor = sp.color ?? "#DC2626";
           const displayLabel =
             sp.label === "ここをクリック" || sp.label === "1. 新規登録"
               ? "右上の赤丸「無料で新規登録」"
               : sp.label;
           return (
-            <div
-              key={idx}
-              style={{
-                position: "absolute",
-                top: 12 + idx * 46,
-                left: 12,
-                backgroundColor: sp.color ?? "#DC2626",
-                color: "#FFFFFF",
-                fontFamily: FONT_ROUND,
-                fontWeight: 800,
-                fontSize: 20,
-                padding: "7px 16px",
-                borderRadius: 999,
-                boxShadow: "0 8px 20px rgba(15, 23, 42, 0.25)",
-                border: "2px solid #FFFFFF",
-                opacity: spO,
-                transform: `scale(${pulse})`,
-                pointerEvents: "none",
-              }}
-            >
-              🔍 {displayLabel}
-            </div>
+            <React.Fragment key={idx}>
+              {sp.w > 0 && sp.h > 0 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    left: `${sp.x}%`,
+                    top: `${sp.y}%`,
+                    width: `${sp.w}%`,
+                    height: `${sp.h}%`,
+                    border: `4px solid ${boxColor}`,
+                    borderRadius: 14,
+                    boxShadow: `0 0 0 4px rgba(255,255,255,0.85), 0 0 28px ${boxColor}`,
+                    opacity: spO,
+                    transform: `scale(${pulse})`,
+                    pointerEvents: "none",
+                  }}
+                />
+              )}
+              {displayLabel && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 12 + idx * 46,
+                    left: 12,
+                    backgroundColor: boxColor,
+                    color: "#FFFFFF",
+                    fontFamily: FONT_ROUND,
+                    fontWeight: 800,
+                    fontSize: 20,
+                    padding: "7px 16px",
+                    borderRadius: 999,
+                    boxShadow: "0 8px 20px rgba(15, 23, 42, 0.25)",
+                    border: "2px solid #FFFFFF",
+                    opacity: spO,
+                    transform: `scale(${pulse})`,
+                    pointerEvents: "none",
+                  }}
+                >
+                  🔍 {displayLabel}
+                </div>
+              )}
+            </React.Fragment>
           );
         })}
       </div>
@@ -929,7 +985,7 @@ const SplitImageSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
           );
         })}
 
-        {(s.bullets ?? []).map((b, i) => {
+        {stepsList.length === 0 && (s.bullets ?? []).map((b, i) => {
           const start = 14 + i * 10;
           const o = interpolate(frame, [start, start + 12], [0, 1], {
             extrapolateLeft: "clamp",
@@ -1300,17 +1356,42 @@ const ChatSimSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   );
 };
 
-// 6. Safety Promises Scene (3 Promises)
+// 6. Safety Promises / Cards / Steps / Summary Scene
 const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   const frame = useCurrentFrame();
-  const steps: { num: string; title: string; desc: string }[] =
-    s.steps ??
+  const rawSteps: { num: string; title: string; desc: string }[] =
+    s.steps?.map((st: any, i: number) => ({
+      num: String(st.num ? (/^\d+$/.test(String(st.num)) ? `STEP 0${st.num}` : st.num) : `STEP 0${i + 1}`),
+      title: String(st.title || `ステップ ${i + 1}`),
+      desc: String(st.desc || st.body || ""),
+    })) ??
     (s as any).cards?.map((c: any, i: number) => ({
-      num: String(c.tag || i + 1),
+      num: String(c.tag || `POINT 0${i + 1}`),
       title: String(c.title || `ポイント ${i + 1}`),
       desc: String(c.body || c.desc || ""),
     })) ??
-    [];
+    (s.bullets ?? []).map((b: string, i: number) => ({
+      num: `POINT 0${i + 1}`,
+      title: b,
+      desc: "",
+    }));
+  const steps = rawSteps.slice(0, 4);
+  const calloutText = s.tip || (s as any).callout?.text;
+  const calloutType = ((s as any).callout?.type as any) || "tip";
+  const defaultBadgeColor =
+    (s.kind as any) === "summary"
+      ? "green"
+      : (s.kind as any) === "steps"
+        ? "blue"
+        : (s.badgeColor ?? "blue");
+  const gridCols =
+    steps.length === 1
+      ? "minmax(0, 1fr)"
+      : steps.length === 2
+        ? "repeat(2, minmax(0, 1fr))"
+        : steps.length === 4
+          ? "repeat(2, minmax(0, 1fr))"
+          : "repeat(3, minmax(0, 1fr))";
 
   return (
     <AbsoluteFill
@@ -1321,14 +1402,14 @@ const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
     >
       <SectionHeading
         badge={s.badge}
-        badgeColor={s.badgeColor ?? "red"}
+        badgeColor={defaultBadgeColor}
         heading={s.heading}
-        sub={s.sub}
+        sub={s.sub || (s as any).lead}
       />
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+          gridTemplateColumns: gridCols,
           gap: 26,
           marginTop: 8,
         }}
@@ -1343,8 +1424,9 @@ const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           });
-          const colors = [THEME.red, THEME.blue, THEME.green];
-          const bgs = [THEME.redLight, THEME.blueLight, THEME.greenLight];
+          const colors = [THEME.blue, THEME.green, THEME.purple, THEME.amber];
+          const bgs = [THEME.blueLight, THEME.greenLight, THEME.purpleLight, THEME.amberLight];
+          const showDesc = Boolean(st.desc && st.desc.trim() !== st.title.trim());
           return (
             <div
               key={i}
@@ -1354,7 +1436,7 @@ const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
                 backgroundColor: "#FFFFFF",
                 borderRadius: 22,
                 border: `2px solid ${THEME.cardBorder}`,
-                borderTop: `8px solid ${colors[i % 3]}`,
+                borderTop: `8px solid ${colors[i % colors.length]}`,
                 padding: 26,
                 boxShadow: "0 14px 34px rgba(15, 23, 42, 0.06)",
               }}
@@ -1362,11 +1444,11 @@ const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
               <div
                 style={{
                   display: "inline-block",
-                  backgroundColor: bgs[i % 3],
-                  color: colors[i % 3],
+                  backgroundColor: bgs[i % bgs.length],
+                  color: colors[i % colors.length],
                   fontFamily: FONT_ROUND,
                   fontWeight: 900,
-                  fontSize: 21,
+                  fontSize: 20,
                   padding: "6px 16px",
                   borderRadius: 999,
                   marginBottom: 14,
@@ -1380,27 +1462,29 @@ const PromisesSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
                   fontWeight: 800,
                   fontSize: 27,
                   color: THEME.navy,
-                  marginBottom: 12,
+                  marginBottom: showDesc ? 12 : 4,
                   lineHeight: 1.35,
                 }}
               >
                 {st.title}
               </div>
-              <div
-                style={{
-                  fontFamily: FONT_SANS,
-                  fontSize: 21,
-                  color: THEME.slate,
-                  lineHeight: 1.5,
-                }}
-              >
-                {st.desc}
-              </div>
+              {showDesc && (
+                <div
+                  style={{
+                    fontFamily: FONT_SANS,
+                    fontSize: 21,
+                    color: THEME.slate,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {st.desc}
+                </div>
+              )}
             </div>
           );
         })}
       </div>
-      {s.tip && <CalloutBox type="tip" text={s.tip} delay={38} />}
+      {calloutText && <CalloutBox type={calloutType} text={calloutText} delay={38} />}
     </AbsoluteFill>
   );
 };
@@ -1738,23 +1822,251 @@ const DotFlowSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   );
 };
 
-// Synchronized Bottom Subtitle (Telop) Bar
-const SubtitleBar: React.FC<{ narration: string; durationInFrames: number }> = ({
-  narration,
-  durationInFrames,
-}) => {
+// 9. Multi-Speaker Dialogue Scene (Host & Guest Conversational Turn-Taking)
+const DialogueSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
   const frame = useCurrentFrame();
-  const sentences = narration
+  const turns = s.dialogue ?? [];
+  return (
+    <AbsoluteFill
+      style={{
+        padding: "76px 68px 136px 68px",
+        flexDirection: "column",
+        gap: 18,
+      }}
+    >
+      <SectionHeading
+        badge={s.badge ?? "DIALOGUE"}
+        badgeColor={s.badgeColor ?? "purple"}
+        heading={s.heading}
+        sub={s.sub}
+      />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 18,
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        {turns.map((t, idx) => {
+          const isHost = (t.role ?? (idx % 2 === 0 ? "host" : "guest")) === "host";
+          const startF = t.startFrame ?? idx * 35;
+          const endF = t.endFrame ?? startF + 90;
+          const isSpeaking = frame >= startF && frame <= endF;
+          const appear = interpolate(frame, [Math.max(0, startF - 6), startF + 10], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          });
+          const slideY = interpolate(frame, [Math.max(0, startF - 6), startF + 10], [18, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          });
+          return (
+            <div
+              key={idx}
+              style={{
+                display: "flex",
+                flexDirection: isHost ? "row" : "row-reverse",
+                alignItems: "flex-start",
+                gap: 18,
+                opacity: appear,
+                transform: `translateY(${slideY}px)`,
+              }}
+            >
+              <div
+                style={{
+                  minWidth: 118,
+                  padding: "10px 16px",
+                  borderRadius: 16,
+                  backgroundColor: isHost ? THEME.blue : THEME.green,
+                  color: "#FFFFFF",
+                  fontFamily: FONT_ROUND,
+                  fontWeight: 800,
+                  fontSize: 20,
+                  textAlign: "center",
+                  boxShadow: isSpeaking
+                    ? `0 0 0 4px rgba(251, 191, 36, 0.85), 0 8px 20px rgba(15, 23, 42, 0.18)`
+                    : "0 4px 12px rgba(15, 23, 42, 0.10)",
+                }}
+              >
+                {isHost ? "🎙️ " : "💬 "}
+                {t.speaker}
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  maxWidth: "82%",
+                  backgroundColor: isSpeaking ? "#FFFFFF" : "#F8FAFC",
+                  border: `3px solid ${isSpeaking ? (isHost ? THEME.blue : THEME.green) : THEME.cardBorder}`,
+                  borderRadius: 20,
+                  padding: "18px 26px",
+                  fontFamily: FONT_SANS,
+                  fontSize: 26,
+                  fontWeight: 700,
+                  color: THEME.navy,
+                  lineHeight: 1.45,
+                  boxShadow: isSpeaking
+                    ? "0 14px 32px rgba(37, 99, 235, 0.12)"
+                    : "0 4px 12px rgba(15, 23, 42, 0.04)",
+                }}
+              >
+                {t.text}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {s.tip && <CalloutBox type="tip" text={s.tip} delay={28} />}
+    </AbsoluteFill>
+  );
+};
+
+// 10. Animated Infographic / Bar Chart Scene
+const ChartSceneView: React.FC<{ s: Lesson01Scene }> = ({ s }) => {
+  const frame = useCurrentFrame();
+  const items = s.chartData?.items ?? [];
+  const unit = s.chartData?.unit ?? "";
+  const maxVal = Math.max(
+    1,
+    ...items.map((it) => it.maxValue ?? it.value ?? 1),
+  );
+  return (
+    <AbsoluteFill
+      style={{
+        padding: "76px 72px 136px 72px",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <SectionHeading
+        badge={s.badge ?? "DATA & METRICS"}
+        badgeColor={s.badgeColor ?? "blue"}
+        heading={s.heading}
+        sub={s.sub ?? s.chartData?.title}
+      />
+      <div
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderRadius: 22,
+          border: `2px solid ${THEME.cardBorder}`,
+          padding: "28px 36px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 22,
+          boxShadow: "0 14px 36px rgba(15, 23, 42, 0.06)",
+        }}
+      >
+        {items.map((it, idx) => {
+          const delay = 10 + idx * 10;
+          const prog = interpolate(frame, [delay, delay + 26], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: Easing.bezier(0.16, 1, 0.3, 1),
+          });
+          const pct = Math.min(100, Math.round((it.value / maxVal) * 100 * prog));
+          const dispVal = Math.round(it.value * prog * 10) / 10;
+          const barColor =
+            it.color ??
+            (idx === 0 ? THEME.blue : idx === 1 ? THEME.green : idx === 2 ? THEME.purple : THEME.amber);
+          return (
+            <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <div style={{ fontFamily: FONT_ROUND, fontWeight: 800, fontSize: 25, color: THEME.navy }}>
+                  {it.label}
+                  {it.note && (
+                    <span style={{ fontSize: 19, fontWeight: 600, color: THEME.muted, marginLeft: 12 }}>
+                      {it.note}
+                    </span>
+                  )}
+                </div>
+                <div style={{ fontFamily: FONT_ROUND, fontWeight: 900, fontSize: 30, color: barColor }}>
+                  {dispVal}
+                  {it.unit ?? unit}
+                </div>
+              </div>
+              <div
+                style={{
+                  width: "100%",
+                  height: 26,
+                  backgroundColor: "#F1F5F9",
+                  borderRadius: 999,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${pct}%`,
+                    height: "100%",
+                    backgroundColor: barColor,
+                    borderRadius: 999,
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {s.tip && <CalloutBox type="tip" text={s.tip} delay={32} />}
+    </AbsoluteFill>
+  );
+};
+
+// Synchronized Bottom Subtitle (Telop) Bar with Acoustic Cue Alignment & Keyword Highlight
+const stripBracketTags = (text: string): string =>
+  text
+    .replace(/(?:\[[^\]]*\]|［[^］]*］)\s*(?:で使った|で作った|で学んだ|とは|の|で|に|を)?/g, "")
+    .trim();
+
+const renderHighlightedSubtitle = (text: string, highlights?: string[]): React.ReactNode => {
+  if (!highlights || highlights.length === 0) return text;
+  const valid = highlights.filter((h) => h && text.includes(h));
+  if (valid.length === 0) return text;
+  const kw = valid[0];
+  const parts = text.split(kw);
+  return (
+    <>
+      {parts.map((p, i) => (
+        <React.Fragment key={i}>
+          {p}
+          {i < parts.length - 1 && (
+            <span
+              style={{
+                color: "#FDE047",
+                textDecoration: "underline",
+                textDecorationColor: "rgba(253, 224, 71, 0.65)",
+                textUnderlineOffset: 4,
+              }}
+            >
+              {kw}
+            </span>
+          )}
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+const resolveActiveCue = (
+  frame: number,
+  narration: string,
+  durationInFrames: number,
+  cues?: SubtitleCue[],
+): { text: string; highlightWords?: string[] } | null => {
+  if (cues && cues.length > 0) {
+    const found = cues.find((c) => frame >= c.startFrame && frame <= c.endFrame);
+    const picked = found ?? cues[cues.length - 1];
+    return { text: stripBracketTags(picked.text), highlightWords: picked.highlightWords };
+  }
+  const cleanNarration = stripBracketTags(narration);
+  const sentences = cleanNarration
     .split(/(?<=[。！？])\s*/)
     .map((x) => x.trim())
     .filter(Boolean);
-
   if (sentences.length === 0) return null;
-
   const totalChars = sentences.reduce((acc, s) => acc + s.length, 0) || 1;
   let accum = 0;
   let activeSentence = sentences[sentences.length - 1];
-
   for (const s of sentences) {
     const startRatio = accum / totalChars;
     accum += s.length;
@@ -1766,6 +2078,17 @@ const SubtitleBar: React.FC<{ narration: string; durationInFrames: number }> = (
       break;
     }
   }
+  return { text: activeSentence };
+};
+
+const SubtitleBar: React.FC<{
+  narration: string;
+  durationInFrames: number;
+  cues?: SubtitleCue[];
+}> = ({ narration, durationInFrames, cues }) => {
+  const frame = useCurrentFrame();
+  const active = resolveActiveCue(frame, narration, durationInFrames, cues);
+  if (!active || !active.text) return null;
 
   return (
     <div
@@ -1795,7 +2118,7 @@ const SubtitleBar: React.FC<{ narration: string; durationInFrames: number }> = (
           border: "1px solid rgba(255, 255, 255, 0.15)",
         }}
       >
-        {activeSentence}
+        {renderHighlightedSubtitle(active.text, active.highlightWords)}
       </div>
     </div>
   );
@@ -1825,43 +2148,36 @@ const SceneRenderer: React.FC<{
       {s.kind === "dual-image" && <DualImageSceneView s={s} />}
       {s.kind === "table" && <TableSceneView s={s} />}
       {s.kind === "chat-sim" && <ChatSimSceneView s={s} />}
-      {(s.kind === "promises" || (s.kind as any) === "cards") && (
-        <PromisesSceneView s={s} />
-      )}
+      {(s.kind === "promises" ||
+        (s.kind as any) === "cards" ||
+        (s.kind as any) === "summary" ||
+        (s.kind as any) === "steps") && <PromisesSceneView s={s} />}
       {s.kind === "worksheet" && <WorksheetSceneView s={s} />}
       {s.kind === "dot-flow" && <DotFlowSceneView s={s} />}
       {s.kind === "video-clip" && <VideoClipSceneView s={s} />}
+      {s.kind === "dialogue" && <DialogueSceneView s={s} />}
+      {s.kind === "chart" && <ChartSceneView s={s} />}
       {!hideSubtitle && (
-        <SubtitleBar narration={s.narration} durationInFrames={s.frames} />
+        <SubtitleBar
+          narration={s.narration}
+          durationInFrames={s.frames}
+          cues={s.subtitleCues}
+        />
       )}
     </AbsoluteFill>
   );
 };
 
 // Large subtitle for vertical / square canvases (outside the 16:9 stage)
-const CanvasSubtitle: React.FC<{ narration: string; durationInFrames: number; fontSize: number }> = ({
-  narration,
-  durationInFrames,
-  fontSize,
-}) => {
+const CanvasSubtitle: React.FC<{
+  narration: string;
+  durationInFrames: number;
+  fontSize: number;
+  cues?: SubtitleCue[];
+}> = ({ narration, durationInFrames, fontSize, cues }) => {
   const frame = useCurrentFrame();
-  const sentences = narration
-    .split(/(?<=[。！？])\s*/)
-    .map((x) => x.trim())
-    .filter(Boolean);
-  if (sentences.length === 0) return null;
-  const totalChars = sentences.reduce((acc, x) => acc + x.length, 0) || 1;
-  let accum = 0;
-  let active = sentences[sentences.length - 1];
-  for (const x of sentences) {
-    const startF = Math.floor((accum / totalChars) * durationInFrames);
-    accum += x.length;
-    const endF = Math.ceil((accum / totalChars) * durationInFrames);
-    if (frame >= startF && frame <= endF) {
-      active = x;
-      break;
-    }
-  }
+  const active = resolveActiveCue(frame, narration, durationInFrames, cues);
+  if (!active || !active.text) return null;
   return (
     <div
       style={{
@@ -1877,7 +2193,7 @@ const CanvasSubtitle: React.FC<{ narration: string; durationInFrames: number; fo
         boxShadow: "0 12px 30px rgba(0, 0, 0, 0.25)",
       }}
     >
-      {active}
+      {renderHighlightedSubtitle(active.text, active.highlightWords)}
     </div>
   );
 };
@@ -2045,6 +2361,7 @@ const AdaptiveCanvas: React.FC<{ build: Lesson01Build }> = ({ build }) => {
               narration={s.narration}
               durationInFrames={s.frames}
               fontSize={Math.round(W * (isPortrait ? 0.048 : 0.036))}
+              cues={s.subtitleCues}
             />
           </Sequence>
         ))}
@@ -2149,14 +2466,23 @@ export const Lesson01Video: React.FC<Lesson01Props> = ({ build }) => {
         >
           <span
             style={{
-              backgroundColor: THEME.navy,
+              backgroundColor:
+                build.videoType === "操作実演"
+                  ? THEME.blue
+                  : build.videoType === "活用事例"
+                    ? THEME.green
+                    : THEME.navy,
               color: "#FFFFFF",
               padding: "4px 12px",
               borderRadius: 8,
               fontSize: 17,
             }}
           >
-            {build.lessonId.toUpperCase()}
+            {/^lesson\d+$/i.test(build.lessonId)
+              ? `${build.lessonId.toUpperCase()}${build.videoType && build.videoType !== "汎用" ? ` ｜ ${build.videoType}` : ""}`
+              : build.videoType && build.videoType !== "汎用"
+                ? build.videoType
+                : "AI COURSE"}
           </span>
           <span>{build.lessonTitle}</span>
         </div>
@@ -2185,7 +2511,7 @@ export const Lesson01Video: React.FC<Lesson01Props> = ({ build }) => {
         </Sequence>
       ))}
 
-      {/* Bottom Progress Bar */}
+      {/* Segmented Chapter Bottom Progress Bar */}
       <div
         style={{
           position: "absolute",
@@ -2203,6 +2529,22 @@ export const Lesson01Video: React.FC<Lesson01Props> = ({ build }) => {
             backgroundColor: THEME.blue,
           }}
         />
+        {build.scenes.slice(1).map((s, idx) => {
+          const tickPct = (s.startFrame / Math.max(1, build.totalFrames)) * 100;
+          return (
+            <div
+              key={`tick-${idx}`}
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: `${tickPct}%`,
+                width: 2,
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+              }}
+            />
+          );
+        })}
       </div>
     </AbsoluteFill>
   );

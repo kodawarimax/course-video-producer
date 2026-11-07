@@ -1,0 +1,5 @@
+# Core runtime uses Python 3.10+ standard library + local FFmpeg / Node.js Remotion.
+# Optional packages for extended document/video ingestion & fallback TTS:
+edge-tts==7.2.7
+markitdown==0.1.1
+Pillow==11.1.0

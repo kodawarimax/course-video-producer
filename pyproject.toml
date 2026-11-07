@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "course-video-producer"
+version = "4.0.0"
+description = "Deterministic universal narrated video generator (v4.0) with 16,563-entry Japanese+AI/IT pronunciation dictionary, Hiragana fallback, acoustic subtitle alignment, and BGM sidechain ducking."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "scripts"]
